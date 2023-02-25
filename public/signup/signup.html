@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/signUp.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <div class="form">
+      <form id="signUpForm" onsubmit="signup(event)">
+        <h1 class="signUp">Sign Up</h1>
+        <input type="text" class="nameInput" id="name" placeholder="Name" />
+        <input
+          type="email"
+          class="mailInput"
+          id="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="number"
+          class="phoneNoInput"
+          id="phoneNo"
+          placeholder="Phone No"
+        />
+        <input
+          type="password"
+          class="passwordInput"
+          id="password"
+          placeholder="Password"
+        />
+        <input id="submit" type="submit" class="signUpButton" value="Sign up" />
+      </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="./signUp.js"></script>
+  </body>
+</html>
