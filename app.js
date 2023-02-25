@@ -4,7 +4,7 @@ const path = require("path");
 const app = express();
 
 const cors = require("cors");
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 const bodyParser = require("body-parser");
 
@@ -13,12 +13,11 @@ const userRoutes = require("./routes/user");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/user",userRoutes);
+app.use("/user", userRoutes);
 
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, `public/${req.url}`));
 });
-
 
 // app.listen(4001);
 

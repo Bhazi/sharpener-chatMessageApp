@@ -14,7 +14,7 @@
 .signUp {
   position: absolute;
   margin-top: 14px;
-  left: 27px;
+  left: 32px;
   font-family: "Noto Sans", sans-serif;
   font-weight: 100;
   color: rgba(41, 39, 39, 0.589);
@@ -26,7 +26,7 @@
 .passwordInput {
   font-family: "Noto Sans", sans-serif;
   font-weight: 400;
-  left: 27px;
+  left: 32px;
   height: 32px;
   width: 330px;
   padding-left: 13px;
@@ -75,4 +75,25 @@
   cursor: pointer;
   font-size: 0.95em;
   padding-bottom: 4px;
+}
+
+.message {
+  position: absolute;
+  left: 482px;
+  top: 488px;
+  font-family: "Noto Sans", sans-serif;
+  color: rgb(206, 80, 80);
+  animation: shake 0.8s;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(6px);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
 }

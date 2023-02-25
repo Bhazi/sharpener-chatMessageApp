@@ -13,8 +13,17 @@ async function signup(e) {
       password: passwordForm,
     })
     .then((result) => {
-      console.log(result);
-      window.location.href = "../login/login.html";
+      if (result.status == 201) alert("Successfully signed up !");
+      // window.location.href = "../login/login.html";
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err.response.status);
+      if (err.response.status == 401) {
+        var pop = document.getElementById("alreadyExist");
+        let p = document.createElement("p");
+        p.className = "message";
+        p.textContent = "* User already exists";
+        pop.appendChild(p);
+      }
+    });
 }
