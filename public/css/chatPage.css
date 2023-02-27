@@ -1,8 +1,8 @@
 .chatTemp {
   position: relative;
   left: 290px;
-  top: 60px;
-  height: 500px;
+  top: 30px;
+  height: 590px;
   width: 770px;
   border: 2px solid black;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -13,11 +13,11 @@
 
 .chatHeading {
   position: relative;
-  left: 27px;
-  top: 19px;
-  font-size: 1.25rem;
+  left: 22px;
+  top: 18px;
+  font-size: 1.5rem;
   color: rgb(248, 248, 248);
-  font-family: "Mynerve", cursive;
+  font-family: "Overpass", sans-serif;
 }
 
 .boxs {
@@ -42,14 +42,49 @@
   );
 }
 
-#user1 {
+.userMessages {
   position: relative;
-  top: -6px;
-  left: 15px;
+  padding-left: 20px;
   font-family: "Golos Text", sans-serif;
   color: rgb(84, 84, 88);
+  overflow: auto;
+  height: 465px;
+}
+
+.userMessages::-webkit-scrollbar {
+  width: 10px;
+}
+.userMessages::-webkit-scrollbar-thumb:hover {
+  background: #d3d1d1;
+}
+
+.userMessages::-webkit-scrollbar-thumb {
+  background: #9e9d9d;
+  border-radius: 2px;
+}
+.userMessages::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#spanMessage {
+  margin-top: 20px;
+  margin-bottom: 61px;
+  font-size: 0.82rem;
   font-weight: 400;
+}
+
+#poiu {
   font-size: 0.9rem;
+  position: relative;
+  top: 28px;
+  left: -21px;
+  font-weight: 400;
+  border-radius: 6px;
+  padding: 8px 10px;
+  height: 36px;
+  box-shadow: rgb(156 156 165 / 25%) 2px 6px 5px -43px,
+    rgb(124 122 122 / 30%) 0px 3px 11px -4px;
+  background-color: #f1f1f1;
 }
 
 .messagingBox {
@@ -63,7 +98,7 @@
   border: none;
   background-color: rgb(255, 255, 255);
   margin-bottom: 9px;
-  margin-left: 9px;
+  margin-left: 13px;
   padding-left: 15px;
   font-family: "Libre Franklin", sans-serif;
   font-weight: 600;
@@ -73,10 +108,10 @@
 
 .sendMessage {
   position: absolute;
-  height: 39px;
-  bottom: 0;
+  height: 47px;
+  bottom: -4px;
   width: 66px;
-  left: 680px;
+  left: 685px;
   margin-bottom: 13px;
   box-shadow: rgba(98, 98, 141, 0.15) 0px 2px 5px 0px,
     rgba(73, 73, 73, 0.05) 0px 1px 1px 0px;

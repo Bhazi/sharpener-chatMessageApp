@@ -1,50 +1,26 @@
+const Chat = require("../models/chats");
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const path = require("path");
 
-// exports.getchatInterface = (req, res) => {
-//   res.sendFile(
-//     path.join(__dirname, "../", "public", "chatPage", "chatPage.html")
-//   );
-// };
+exports.getUserName = async (req, res) => {
+  var attributes = ["messages"];
+  const message = await Chat.findAll({
+    include: {
+      model: User,
+      attributes: ["name"],
+    },
+    attributes: attributes,
+  });
 
-exports.getUserName = (req, res) => {
-  console.log(req.user, req.names);
-  res
-    .status(200)
-    .json({ name: req.names, message: "hello welcome to this world" });
+  res.status(200).json({ messages: message });
+};
 
-  //     const idd = req.user;
-  //   var attributes = ["ispremiumuser"];
-  //   const isPremium = await Login.findOne({
-  //     where: { id: req.user },
-  //     attributes: attributes,
-  //   });
+// name: req.names, messages: message
 
-  //   const page = parseInt(req.query.page);
-  //   const ITEMS_PER_PAGE = parseInt(req.query.limit);
-
-  //   var totalCount = await Expense.count({ where: { loginId: idd } });
-
-  //   const user = await Expense.findAll({
-  //     where: { loginId: idd },
-  //     offset: (page - 1) * ITEMS_PER_PAGE,
-  //     limit: ITEMS_PER_PAGE,
-  //   });
-
-  //   if (user == "") {
-  //     return res.status(200).json({ premium: isPremium, datas: null });
-  //   } else {
-  //     res.status(200).json({
-  //       allUsers: user,
-  //       currentPage: page,
-  //       hasNextPage: ITEMS_PER_PAGE * page < totalCount,
-  //       nextPage: page + 1,
-  //       hasPreviousPage: page > 1,
-  //       previousPage: page - 1,
-  //       lastPage: Math.ceil(totalCount / ITEMS_PER_PAGE),
-  //       premium: isPremium,
-  //     });
-  //   }
+exports.postChats = async (req, res) => {
+  await Chat.create({
+    messages: req.body.chats,
+    userId: req.user,
+  })
+    .then(res.status(201).json())
+    .catch(res.status(401).json());
 };

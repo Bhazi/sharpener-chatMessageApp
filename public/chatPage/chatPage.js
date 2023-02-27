@@ -1,53 +1,44 @@
 var token = localStorage.getItem("token");
+document.getElementById("submitChats").addEventListener("click", async () => {
+  location.reload();
+  var chatsFromUser = document.getElementById("userChats").value;
+  await axios
+    .post(
+      "http://localhost:4001/chats",
+      {
+        chats: chatsFromUser,
+      },
+      { headers: { Authorization: token } }
+    )
+    .then()
+    .catch();
+});
 
-pop();
-async function pop() {
+window.addEventListener("DOMContentLoaded", async () => {
+    
   await axios
     .get("http://localhost:4001/message", {
       headers: { Authorization: token },
     })
     .then((result) => {
-      var tr = document.getElementById("chatTemp");
-      var yt = document.getElementById("user1");
-      yt.textContent = `${result.data.name} : `;
-      var p = document.createElement("span");
-        p.textContent = result.data.message;
-      console.log(result.data.message);
-      yt.appendChild(p);
-      tr.nextSibling(yt);
+      //   console.log(result);
+      result.data.messages.forEach((e) => {
+        showMessages(e, e.user.name);
+      });
     })
     .catch((err) => console.log(err));
+});
+
+function showMessages(data, name) {
+  var div = document.getElementById("userMessages");
+  var user = document.createElement("p");
+  user.id = "spanMessage";
+  user.textContent = `${name} : `;
+  var span = document.createElement("span");
+  span.textContent = data.messages;
+  span.id = "poiu";
+  user.appendChild(span);
+  div.appendChild(user);
 }
 
-// document.getElementById("hello").textContent = ;
 
-// const token = req.header("Authorization");
-// const userId = jwt.verify(
-//   token,
-//   "45asd@asd8a6sd45POsoO0ddw2s9kA56s#o3asd3da22WwoW52"
-// ).userId;
-
-// const expense = req.body.expense;
-// const desc = req.body.description;
-// const category = req.body.category;
-
-// var attributes = ["totalExpenses"];
-// const pass = await Login.findOne({
-//   where: { id: userId },
-//   attributes: attributes,
-// });
-
-// var totalExpensesChanged = pass.dataValues.totalExpenses + parseInt(expense);
-
-// await Login.update(
-//   { totalExpenses: totalExpensesChanged },
-//   { where: { id: userId } }
-// );
-
-// await Expense.create({
-//   expense: expense,
-//   description: desc,
-//   category: category,
-//   loginId: userId,
-// });
-// return res.status(201).json();

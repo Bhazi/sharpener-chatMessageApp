@@ -8,21 +8,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Golos+Text&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Golos+Text&family=Libre+Franklin:wght@300&family=Mynerve&family=Overpass:wght@300&display=swap"
       rel="stylesheet"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300&family=Mynerve&display=swap" rel="stylesheet">
     <title>Message</title>
   </head>
   <body>
     <div>
       <div id="chatTemp" class="chatTemp">
-        <div class="boxs"><span class="chatHeading"> Messages</span></div>
-        <p id="user1">Hello</p>
-        <input class="messagingBox" placeholder="Type here" type="text" />
-        <button class="sendMessage" type="submit">send</button>
+        <div class="boxs">
+          <span class="chatHeading"> Messages </span>
+        </div>
+        <div id="userMessages" class="userMessages"></div>
+        <input
+          class="messagingBox"
+          id="userChats"
+          placeholder="Type a message here"
+          type="text"
+        />
+        <button
+          type="submitChats"
+          id="submitChats"
+          class="sendMessage"
+          type="submit"
+        >
+          send
+        </button>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
