@@ -8,11 +8,12 @@ async function signup(e) {
       email: emailForm,
       password: passwordForm,
     })
-    .then((result) => {
+    .then(async (result) => {
       if (result.status == 200) {
         alert("Successfully logged ! ");
-        console.log(result);
-        // window.location.href = "../login/login.html";
+        localStorage.setItem("token", result.data.token);
+        // window.location = "http://localhost:4001/messageInterface";
+        window.location.href = "../chatPage/chatPage.html";
       }
     })
     .catch((err) => {

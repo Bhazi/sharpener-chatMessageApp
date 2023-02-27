@@ -10,12 +10,15 @@ const bodyParser = require("body-parser");
 
 const sequelize = require("./util/database");
 const userRoutes = require("./routes/user");
+const chatRoutes = require("./routes/chat");
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/user", userRoutes);
+app.use(chatRoutes);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, `public/${req.url}`));
 });
 
