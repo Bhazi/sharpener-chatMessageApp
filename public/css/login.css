@@ -20,6 +20,7 @@
   color: rgba(41, 39, 39, 0.589);
 }
 
+
 .mailInput,
 .passwordInput {
   font-family: "Noto Sans", sans-serif;
@@ -36,6 +37,7 @@
   letter-spacing: 0.027rem;
 }
 
+
 .mailInput {
   position: absolute;
   top: 80px;
@@ -46,13 +48,14 @@
   top: 130px;
 }
 
-.signUpButton {
+
+.submitButton {
   width: 80px;
   font-family: "Noto Sans", sans-serif;
   position: absolute;
   top: 180px;
   height: 32px;
-  left: 293px;
+  left: 298px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     rgba(17, 17, 26, 0.1) 0px 0px 8px;
   border: none;
@@ -61,14 +64,16 @@
   opacity: 1.2;
   color: rgb(255, 255, 255);
   cursor: pointer;
-  font-size: 0.95em;
-  padding-bottom: 4px;
+  font-size: 0.96em;
+  padding-bottom: 2.6px;
 }
+
 
 .message {
   position: absolute;
-  left: 482px;
-  top: 488px;
+  font-size: 0.92rem;
+  left: 480px;
+  top: 416px;
   font-family: "Noto Sans", sans-serif;
   color: rgb(206, 80, 80);
   animation: shake 0.8s;
@@ -76,20 +81,20 @@
 
 @keyframes shake {
   25% {
-    transform: translateX(6px);
+    transform: translateX(9px);
   }
   50% {
-    transform: translateX(-4px);
+    transform: translateX(-3px);
   }
   75% {
-    transform: translateX(2px);
+    transform: translateX(9px);
   }
 }
 
 .signupLinkText {
   position: relative;
-  top: 150px;
-  left: 465px;
+  top: 265px;
+  left: 23px;
   font-family: "Noto Sans", sans-serif;
   font-size: 0.9rem;
   color: rgba(41, 39, 39, 0.589);
@@ -100,4 +105,4 @@
   font-size: 1rem;
   color: rgb(224, 107, 107);
   text-decoration: none;
-}
+} 

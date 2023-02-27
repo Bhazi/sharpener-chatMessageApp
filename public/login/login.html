@@ -29,20 +29,22 @@
           class="passwordInput"
           id="password"
           placeholder="Password"
+          required
         />
-        <input id="submit" type="submit" class="signUpButton" value="submit" />
+        <input id="submit" type="submit" class="submitButton" value="submit" />
       </form>
+      <div>
+        <p id="signupLink" class="signupLinkText">
+          Don't have an account
+          <a class="signupLink" href="http://localhost:4001/signup/signup.html"
+            >Sign Up</a
+          >
+        </p>
+      </div>
     </div>
-    <div>
-      <p class="signupLinkText">
-        Don't have an account
-        <a class="signupLink" href="http://localhost:4001/signup/signup.html"
-          >Sign Up</a
-        >
-      </p>
-    </div>
-    <div id="alreadyExist"></div>
+
+    <div id="userDeclined"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
-    <script src="./signUp.js"></script>
+    <script src="./login.js"></script>
   </body>
 </html>
