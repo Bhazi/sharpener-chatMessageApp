@@ -13,8 +13,10 @@ async function signup(e) {
       password: passwordForm,
     })
     .then((result) => {
-      if (result.status == 201) alert("Successfully signed up !");
-      // window.location.href = "../login/login.html";
+      if (result.status == 201) {
+        alert("Successfully signed up ! ");
+        window.location.href = "../login/login.html";
+      }
     })
     .catch((err) => {
       console.log(err.response.status);

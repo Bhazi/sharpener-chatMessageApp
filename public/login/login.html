@@ -4,9 +4,45 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Log In</title>
   </head>
   <body>
-    <h1>Hello</h1>
+    <div class="form">
+      <form id="signUpForm" onsubmit="signup(event)">
+        <h1 class="logIn">Log In</h1>
+        <input
+          type="email"
+          class="mailInput"
+          id="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          class="passwordInput"
+          id="password"
+          placeholder="Password"
+        />
+        <input id="submit" type="submit" class="signUpButton" value="submit" />
+      </form>
+    </div>
+    <div>
+      <p class="signupLinkText">
+        Don't have an account
+        <a class="signupLink" href="http://localhost:4001/signup/signup.html"
+          >Sign Up</a
+        >
+      </p>
+    </div>
+    <div id="alreadyExist"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="./signUp.js"></script>
   </body>
 </html>
