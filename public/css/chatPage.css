@@ -46,7 +46,7 @@
   position: relative;
   padding-left: 20px;
   font-family: "Golos Text", sans-serif;
-  color: rgb(84, 84, 88);
+  
   overflow: auto;
   height: 465px;
 }
@@ -67,24 +67,27 @@
 }
 
 #spanMessage {
-  margin-top: 20px;
-  margin-bottom: 61px;
   font-size: 0.82rem;
   font-weight: 400;
+  color: rgb(223, 143, 78);
 }
 
 #poiu {
+  color: rgb(84, 84, 88);
   font-size: 0.9rem;
   position: relative;
-  top: 28px;
-  left: -21px;
+  top:-11px;
+  left: 18px;
   font-weight: 400;
   border-radius: 6px;
   padding: 8px 10px;
-  height: 36px;
+  /* height: 36px; */
+  height: auto;
   box-shadow: rgb(156 156 165 / 25%) 2px 6px 5px -43px,
     rgb(124 122 122 / 30%) 0px 3px 11px -4px;
   background-color: #f1f1f1;
+  width:max-content;
+  max-width: 300px;
 }
 
 .messagingBox {
