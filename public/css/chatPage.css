@@ -30,16 +30,9 @@
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   border-radius: 8px;
   border: none;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(136, 127, 127);
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  background: rgb(129, 125, 204);
-  background: linear-gradient(
-    90deg,
-    rgba(129, 125, 204, 1) 0%,
-    rgba(129, 129, 204, 1) 46%,
-    rgba(151, 148, 210, 1) 100%
-  );
 }
 
 .userMessages {
