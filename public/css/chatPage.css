@@ -1,47 +1,321 @@
-.chatTemp {
-  position: relative;
-  left: 290px;
-  top: 30px;
-  height: 590px;
-  width: 770px;
+/* .chatTemp { */
+/* left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  width: 100%;
   border: 2px solid black;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
-  border-radius: 8px;
   border: none;
-  background-color: rgb(255, 255, 255);
-}
+  background-color: #4b4949; */
+/* } */
 
 .chatHeading {
-  position: relative;
-  left: 22px;
-  top: 18px;
-  font-size: 1.5rem;
+  position: absolute;
+  left: 58px;
+  top: 23px;
+  font-size: 1.69rem;
   color: rgb(248, 248, 248);
-  font-family: "Overpass", sans-serif;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+}
+
+img {
+  height: 27px;
 }
 
 .boxs {
-  position: relative;
-  left: 0px;
+  position: absolute;
   top: 0px;
-  height: 60px;
-  width: 770px;
+  left: 0px;
+  height: 82px;
+  width: 402px;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  border-radius: 8px;
-  border: none;
-  background-color: rgb(136, 127, 127);
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  /* border: none; */
+  /* background-color: rgb(0, 0, 0); */
+  background: rgb(52, 52, 54);
+  background: linear-gradient(
+    270deg,
+    rgba(52, 52, 54, 1) 0%,
+    rgba(60, 60, 62, 1) 58%,
+    rgba(84, 84, 88, 1) 100%
+  );
 }
 
-.userMessages {
+.navBar {
+  position: absolute;
+  top: 82px;
+  left: 0px;
+  height: 585px;
+  width: 402px;
+  /* box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px; */
+  /* border: none; */
+  background-color: rgb(63, 62, 62);
+}
+
+.userNameDivMain {
+  border: 1px solid rgb(78, 77, 77);
   position: relative;
-  padding-left: 20px;
+  height: 37px;
+  color: #f1f1f1;
   font-family: "Golos Text", sans-serif;
-  
+  padding-left: 19px;
+  padding-top: 17px;
+}
+
+.userNameDivMain:hover {
+  background-color: rgb(52, 52, 53);
+}
+
+.nav {
+  position: absolute;
+  top: 28px;
+  left: 10px;
+  background-color: #525256;
+  border: none;
+}
+
+/* .navigation {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 665px;
+  width: 401px;
+  background-color: rgb(78, 77, 77);
+} */
+
+.navigation {
+  position: absolute;
+  top: 0px;
+  left: -401px; /* move the div offscreen to the left */
+  height: 665px;
+  width: 401px;
+  background-color: rgb(78, 77, 77);
+  animation: slide-in 0.4s forwards; /* use slide-in animation for 0.5 seconds */
+}
+
+@keyframes slide-in {
+  100% {
+    left: 0px; /* move the div to its final position on the screen */
+  }
+}
+
+.navigation.slide-out {
+  animation: slide-out 0.5s forwards; /* use slide-out animation for 0.5 seconds */
+}
+
+@keyframes slide-out {
+  0% {
+    left: 0px; /* start at final position on the screen */
+  }
+  100% {
+    left: -401px; /* move the div offscreen to the left */
+  }
+}
+
+.userNameDiv {
+  border: 1px solid rgb(78, 77, 77);
+  position: relative;
+  height: 33px;
+  top: 83px;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  padding-left: 18px;
+  padding-top: 11px;
+}
+
+.userNameDiv:hover {
+  background-color: rgb(92, 91, 91);
+}
+
+.createGrp,
+.createPersMsg {
+  position: relative;
+  height: 45px;
+  border: 1px solid rgb(97, 95, 95);
+  top: 83px;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  padding-left: 11px;
+  padding-top: 20px;
+}
+
+.createGrp:hover,
+.createPersMsg:hover {
+  background-color: rgb(92, 91, 91);
+}
+
+.personalMsgNav {
+  position: absolute;
+  top: 0px;
+  left: -401px; /* move the div offscreen to the left */
+  height: 665px;
+  width: 401px;
+  background-color: rgb(78, 77, 77);
+  animation: slide-in 0.4s forwards; /* use slide-in animation for 0.5 seconds */
+}
+
+.personalMsgNav.slide-out {
+  animation: slide-out 0.5s forwards; /* use slide-out animation for 0.5 seconds */
+}
+
+.reverseButton,
+.reverseButtonInPersMsg,
+.reverseButtonInCreateGrp {
+  position: absolute;
+  top: 28px;
+  left: 12px;
+  background-color: rgb(78, 77, 77);
+  border: none;
+}
+
+.reverseButton:hover,
+.reverseButtonInPersMsg:hover,
+.reverseButtonInCreateGrp:hover {
+  background-color: rgb(75, 73, 73);
+  border-radius: 7px;
+}
+
+.createGrpDiv {
+  position: absolute;
+  top: 0px;
+  left: -401px; /* move the div offscreen to the left */
+  height: 665px;
+  width: 401px;
+  background-color: rgb(78, 77, 77);
+  animation: slide-in 0.4s forwards; /* use slide-in animation for 0.5 seconds */
+}
+
+.innercreateGrpDiv {
+  position: relative;
+  border-top: 1px solid #383535;
+  top: 82px;
+  width: 402px;
+  height: 100px;
+}
+
+.grpNameLabel {
+  position: relative;
+  font-family: "Golos Text", sans-serif;
+  color: #f1f1f1;
+  top: 11px;
+  left: 16px;
+}
+
+.grpInput {
+  position: relative;
+  top: 37px;
+  width: 336px;
+  height: 31px;
+  left: 15px;
+  border-radius: 3px;
+  border: none;
+  padding-left: 11px;
+  font-family: "Libre Franklin", sans-serif;
+  font-weight: 600;
+}
+
+.grpSubmit {
+  position: relative;
+  top: 47px;
+  height: 30px;
+  width: 64px;
+  left: 301px;
+  box-shadow: rgb(50 50 93 / 25%) 0px 2px 5px -1px,
+    rgb(0 0 0 / 30%) 0px 1px 3px -1px;
+  cursor: pointer;
+  font-family: "Golos Text", sans-serif;
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  font-size: 0.84rem;
+  padding-bottom: 4px;
+  background-color: rgb(104 99 99);
+  color: rgb(252 255 255);
+  border: 1px solid rgb(44, 44, 43);
+  border-radius: 7px;
+}
+
+.grpSubmit:hover {
+  background-color: #525256;
+}
+
+.mainDivUsersCreateGrp {
+  position: relative;
+  color: #ffffff;
+  top: 99px;
+  height: auto;
+  padding-left: 9px;
+  padding-top: 10px;
+  padding-bottom: 27px;
+  font-family: "Golos Text", sans-serif;
+}
+.userNamesOnCreateGrp {
+  margin-top: 3px;
+  border: 1px solid rgb(106 103 103);
+  position: relative;
+  height: 20px;
+  left: 0px;
+  width: 365px;
+  border-radius: 4px;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  padding-left: 11px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  top: 9px;
+}
+
+.userNamesOnCreateGrp.active {
+  background-color: rgb(189 189 189 / 96%);
+  color: black;
+  /* background-color: #ffffff2f;
+  color: rgb(255, 255, 255); */
+}
+
+.userNamesOnCreateGrp:hover {
+  background-color: #ffffff2f;
+  color: rgb(255, 255, 255);
+}
+.createGrpDiv.slide-out {
+  animation: slide-out 0.5s forwards; /* use slide-out animation for 0.5 seconds */
+}
+
+.userName {
+  position: absolute;
+  left: 402px;
+  top: 0px;
+  height: 82px;
+  width: 958px;
+  background-color: rgb(95, 95, 97);
+}
+
+p.userNameToChat {
+  position: absolute;
+  left: 35px;
+  top: 10px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: rgb(248, 248, 248);
+  font-family: "Golos Text", sans-serif;
+}
+.userMessages {
+  border-left: 6px solid rgb(184, 133, 133);
+  position: absolute;
+  padding-left: 20px;
+  top: 82px;
+  width: 932px;
+  left: 402px;
+  font-family: "Golos Text", sans-serif;
+  /* background-color: rgba(133, 131, 131, 0.945); */
+  background: rgb(123, 123, 128);
+  background: linear-gradient(
+    357deg,
+    rgba(123, 123, 128, 1) 0%,
+    rgba(155, 155, 164, 1) 100%
+  );
   overflow: auto;
-  height: 465px;
+  height: 523px;
 }
 
 .userMessages::-webkit-scrollbar {
@@ -59,64 +333,179 @@
   background: #f1f1f1;
 }
 
-#spanMessage {
-  font-size: 0.82rem;
-  font-weight: 400;
-  color: rgb(223, 143, 78);
+.starrt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 9px;
+  padding: 0;
 }
 
-#poiu {
-  color: rgb(84, 84, 88);
+.ennd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 5px;
+}
+
+#spanMessageStart {
+  color: rgb(47, 47, 48);
   font-size: 0.9rem;
-  position: relative;
-  top:-11px;
-  left: 18px;
   font-weight: 400;
-  border-radius: 6px;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
   padding: 8px 10px;
-  /* height: 36px; */
-  height: auto;
-  box-shadow: rgb(156 156 165 / 25%) 2px 6px 5px -43px,
-    rgb(124 122 122 / 30%) 0px 3px 11px -4px;
-  background-color: #f1f1f1;
-  width:max-content;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background-color: #f0efef;
+  width: max-content;
   max-width: 300px;
+  margin: 0px 6px;
 }
 
-.messagingBox {
+#spanMessageEnd {
+  /* margin-top: -28px; */
+  margin-right: 37px;
+  color: rgb(47, 47, 48);
+  font-size: 0.9rem;
+  /* position: relative; */
+  font-weight: 400;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 8px 10px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background-color: #f0efef;
+  /* max-width: 150px; */
+  /* width: auto; */
+  max-width: 300px;
+  margin: 0px 33px;
+}
+
+.endFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: -3px;
+}
+
+.startFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 0px;
+  padding: 0;
+  color: #f5f5f5;
+}
+
+.nameOfUsersInGrpEnnd {
+  display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 2px;
+    font-size: 0.93rem;
+    color: white;
+    margin-right: 16px;
+    font-family: 'Nunito', sans-serif;
+    margin-top: 6px;
+}
+
+.nameOfUsersInGrpStarrt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: 'Nunito', sans-serif;
+  margin: 0px;
+}
+
+#spanMessageEndFlex {
+  color: rgb(47, 47, 48);
+  font-size: 0.91rem;
+  font-weight: 400;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 8px 10px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background-color: #f0efef;
+  max-width: 300px;
+  margin-right: 0px;
+  margin-top: 3px;
+}
+
+#spanMessageStartFlex {
+  color: rgb(47, 47, 48);
+    font-size: 0.9rem;
+    font-weight: 400;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    padding: 8px 10px;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    background-color: #f0efef;
+    width: max-content;
+    max-width: 300px;
+    margin-top: 3px;
+}
+
+.inputAndSubmit {
   position: absolute;
-  bottom: 0px;
-  height: 40px;
-  width: 640px;
-  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
-    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
-  border-radius: 8px;
+  background: rgb(102, 102, 106);
+  background: linear-gradient(
+    90deg,
+    rgba(102, 102, 106, 1) 0%,
+    rgba(129, 129, 134, 1) 51%,
+    rgba(102, 102, 106, 1) 100%
+  );
+  top: 605px;
+  height: 62px;
+  width: 948px;
+  left: 402px;
+}
+.messagingBox {
+  outline: 1px solid rgb(44, 43, 43);
+  padding-top: 2px;
+  position: absolute;
+  color: #161515;
+  left: 24px;
+  top: 17px;
+  height: 29px;
+  width: 758px;
+  letter-spacing: 0.03rem;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border: none;
-  background-color: rgb(255, 255, 255);
-  margin-bottom: 9px;
-  margin-left: 13px;
-  padding-left: 15px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.747);
+  padding-left: 23px;
   font-family: "Libre Franklin", sans-serif;
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: 0.91rem;
   padding-bottom: 5px;
 }
 
 .sendMessage {
   position: absolute;
-  height: 47px;
-  bottom: -4px;
-  width: 66px;
-  left: 685px;
-  margin-bottom: 13px;
-  box-shadow: rgba(98, 98, 141, 0.15) 0px 2px 5px 0px,
-    rgba(73, 73, 73, 0.05) 0px 1px 1px 0px;
-  border: none;
+  top: 16px;
+  height: 37px;
+  width: 82px;
+  left: 816px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   cursor: pointer;
-  border-radius: 9px;
   font-family: "Golos Text", sans-serif;
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
   font-size: 1rem;
   padding-bottom: 5px;
-  background-color: rgb(248, 248, 248);
-  color: rgb(85, 87, 87);
+  background-color: rgb(240, 239, 239);
+  color: rgb(53, 54, 54);
+  border: 1px solid rgb(44, 44, 43);
+  border-radius: 7px;
+}
+
+.sendMessage:hover {
+  background-color: rgba(218, 213, 213, 0.87);
 }

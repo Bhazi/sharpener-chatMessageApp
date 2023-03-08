@@ -8,18 +8,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Golos+Text&family=Libre+Franklin:wght@300&family=Mynerve&family=Overpass:wght@300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Golos+Text&family=Libre+Franklin:wght@300&family=Mynerve&family=Nunito:wght@500&family=Open+Sans:wght@300&family=Overpass:wght@300&display=swap"
       rel="stylesheet"
     />
     <title>Message</title>
   </head>
   <body>
-    <div>
-      <div id="chatTemp" class="chatTemp">
-        <div class="boxs">
-          <span class="chatHeading"> Messages </span>
-        </div>
-        <div id="userMessages" class="userMessages"></div>
+    <div id="chatTemp" class="chatTemp">
+      <div class="boxs">
+        <button class="nav" title="options" id="nav">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAANElEQVR4nO3VwQkAIAwDwO4/lh0sTuBDqPi5WyAQCKkCpiXpvNe/gtd4Y3BkTjAm3gmoOxvWvmrcKBZ+KAAAAABJRU5ErkJggg=="
+          />
+        </button>
+        <span class="chatHeading">Chats </span>
+      </div>
+      <div id="navBar" class="navBar"></div>
+      <div class="userName">
+        <p id="userNameToChat" class="userNameToChat"></p>
+      </div>
+      <div id="userMessages" class="userMessages"></div>
+      <div class="inputAndSubmit">
         <input
           class="messagingBox"
           id="userChats"

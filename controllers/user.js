@@ -1,6 +1,11 @@
 const User = require("../models/user");
+const groupName = require("../models/groupName");
+const groupMembers = require("../models/groupMembers");
+const UserRelationship = require("../models/userRelationship");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const GroupMessage = require("../models/groupMessage");
+const GroupName = require("../models/groupName");
 
 exports.postSignUp = (req, res, next) => {
   var { name, email, phone, password } = req.body;
@@ -12,7 +17,7 @@ exports.postSignUp = (req, res, next) => {
 
     bcrypt.hash(password, 10, async (req, hash) => {
       await User.create({
-        name: name,
+        username: name,
         email: email,
         phoneNo: phone,
         password: hash,
@@ -34,16 +39,16 @@ exports.postSignUp = (req, res, next) => {
 exports.postLogIn = async (req, res, next) => {
   var { email, password } = req.body;
 
-  //checking email exist or not in database
+  console.log(email, password);
 
+  //checking email exist or not in database
   const emailsIsThereOrNot = await User.findOne({ where: { email: email } });
   if (emailsIsThereOrNot == null) {
     return res.status(404).json();
   }
 
   //finding password belongs to the email
-
-  var attributes = ["password", "id", "name"];
+  var attributes = ["password", "id", "username"];
   const passwordFromDb = await User.findOne({
     where: { email: email },
     attributes: attributes,
@@ -61,10 +66,99 @@ exports.postLogIn = async (req, res, next) => {
     if (result) {
       res.status(200).json({
         message: "User login sucessful",
-        token: tokenising(obj.id, obj.name),
+        token: tokenising(obj.id, obj.username),
       });
     } else {
       res.status(401).json();
     }
   });
+};
+
+exports.postRelationship = async (req, res) => {
+  try {
+    await UserRelationship.create({
+      user_id: req.user,
+      follower_id: req.body.relatedFriendId,
+    });
+    await UserRelationship.create({
+      user_id: req.body.relatedFriendId,
+      follower_id: req.user,
+    });
+
+    res.sendStatus(201); // Created
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(409); // Conflict
+  }
+};
+
+exports.getUsersInScreen = async (req, res) => {
+  try {
+    const attributes = ["username", "id"];
+    const result = await UserRelationship.findAll({
+      where: { user_id: req.user },
+      include: [
+        {
+          model: User,
+          as: "user",
+          attributes: attributes,
+        },
+      ],
+    });
+
+    const attribute = ["group_id"];
+    const userGroups = await groupMembers.findAll({
+      where: {
+        user_id: req.user,
+      },
+      attributes: attribute,
+    });
+
+    const attributea = ["name", "id"];
+    let wwwww = await Promise.all(
+      userGroups.map(async (groupIds) => {
+        return GroupName.findOne({
+          where: { id: groupIds.group_id },
+          attributes: attributea,
+        });
+      })
+    );
+
+    res.status(200).json({ result: result, re: wwwww });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+};
+
+exports.createGrpUsers = async (req, res) => {
+  const groupId = await groupName.create({
+    name: req.body.groupName,
+  });
+
+  if (req.body.array != null) {
+    try {
+      await Promise.all(
+        req.body.array.map(async (element) => {
+          await groupMembers.create({
+            user_id: element,
+            group_id: groupId.id,
+          });
+        })
+      );
+
+      // Add the admin to the group as well
+      await groupMembers.create({
+        user_id: req.user,
+        group_id: groupId.id,
+      });
+
+      res.status(200).send("Group created successfully");
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error creating group members");
+    }
+  } else {
+    res.status(400).send("No group members provided");
+  }
 };
