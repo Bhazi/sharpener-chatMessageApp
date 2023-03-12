@@ -4,8 +4,8 @@ const groupMembers = require("../models/groupMembers");
 const UserRelationship = require("../models/userRelationship");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const GroupMessage = require("../models/groupMessage");
 const GroupName = require("../models/groupName");
+const { where } = require("sequelize");
 
 exports.postSignUp = (req, res, next) => {
   var { name, email, phone, password } = req.body;
@@ -147,10 +147,11 @@ exports.createGrpUsers = async (req, res) => {
         })
       );
 
-      // Add the admin to the group as well
+      // Add the creator to the group as well
       await groupMembers.create({
         user_id: req.user,
         group_id: groupId.id,
+        admin: true,
       });
 
       res.status(200).send("Group created successfully");
@@ -161,4 +162,81 @@ exports.createGrpUsers = async (req, res) => {
   } else {
     res.status(400).send("No group members provided");
   }
+};
+
+exports.getMembersInGrp = async (req, res) => {
+  const attributes = ["user_id", "admin"];
+  const result = await groupMembers.findAll({
+    where: { group_id: req.query.groupiId },
+    attributes: attributes,
+    include: {
+      model: User,
+      as: "users",
+      attributes: ["username", "id"],
+    },
+  });
+
+  res.status(200).json({
+    users: result,
+    sendUser: req.user,
+  });
+};
+
+exports.postMakeAdmin = async (req, res) => {
+  try {
+    const { userId, groupId } = req.query;
+    const result = await groupMembers.update(
+      { admin: true },
+      {
+        where: {
+          user_id: userId,
+          group_id: groupId,
+        },
+      }
+    );
+    res.status(200).json({ success: "success" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.deleteMember = async (req, res) => {
+  try {
+    await groupMembers.destroy({
+      where: { user_id: req.params.userId, group_id: req.params.groupId },
+    });
+    res.send({ message: "successfully deleted", success: "success" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error deleting member from group");
+  }
+};
+
+exports.getSearchUser = async (req, res) => {
+  console.log(req.query.searchType, "the type");
+  console.log(req.query.value, "the value");
+
+  try {
+    let user;
+    if (req.query.searchType == "name") {
+      user = await User.findAll({ where: { username: req.query.value } });
+    } else if (req.query.searchType == "phone") {
+      user = await User.findAll({ where: { phoneNo: req.query.value } });
+    } else {
+      user = await User.findAll({ where: { email: req.query.value } });
+    }
+
+    res.json({ user, success: "success" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.postAddMemberForGrp = async (req, res) => {
+  console.log(req.query);
+  await groupMembers.create({
+    user_id: req.query.userId,
+    group_id: req.query.groupId,
+  });
 };

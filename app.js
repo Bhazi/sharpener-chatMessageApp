@@ -9,12 +9,13 @@ app.use(cors({ origin: "*" }));
 const bodyParser = require("body-parser");
 const sequelize = require("./util/database");
 
-const User = require("./models/user");
-const Message = require("./models/messages");
 // const UserRelationship = require("./models/userRelationship");
 
 const userRoutes = require("./routes/user");
 const chatRoutes = require("./routes/message");
+
+const User = require("./models/user");
+const Message = require("./models/messages");
 const UserRelationship = require("./models/userRelationship");
 const GroupName = require("./models/groupName");
 const GroupMembers = require("./models/groupMembers");
@@ -60,7 +61,7 @@ GroupName.belongsToMany(User, {
   foreignKey: "group_id",
 });
 
-GroupMembers.belongsTo(User, { as: "useraa", foreignKey: "user_id" });
+GroupMembers.belongsTo(User, { as: "users", foreignKey: "user_id" });
 
 GroupName.hasMany(GroupMessage);
 GroupMessage.belongsTo(GroupName);

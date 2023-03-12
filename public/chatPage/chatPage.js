@@ -2,6 +2,7 @@ var token = localStorage.getItem("token");
 // var token2 = localStorage.getItem("sendUser");
 var token2 = null;
 var forChat = null;
+var admin = null;
 
 document.getElementById("submitChats").addEventListener("click", async () => {
   var inputBox = document.getElementById("userChats");
@@ -49,7 +50,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 let intervalId = null;
 
 function showGroupChatOnScreenMain(data) {
-  console.log(data);
   var navBar = document.getElementById("navBar");
   var newwDiv = document.createElement("div");
   newwDiv.id = data.id;
@@ -63,7 +63,6 @@ function showGroupChatOnScreenMain(data) {
 
 async function groupChatInterface() {
   forChat = "group";
-  console.log(token2, "in first");
   if (intervalId != null) {
     clearInterval(intervalId);
   }
@@ -71,9 +70,6 @@ async function groupChatInterface() {
   var div = document.getElementById("userMessages");
   div.innerHTML = "";
   document.getElementById("userNameToChat").textContent = this.textContent;
-  console.log("hello you clicked ", this.textContent);
-
-  this.id = this.id;
 
   const msg = async () => {
     await axios
@@ -82,9 +78,11 @@ async function groupChatInterface() {
       })
       .then((resu) => {
         console.log(resu);
+        admin = resu.data.admin;
         const div = document.getElementById("userMessages");
         div.innerHTML = ""; // Clear existing messages
         // localStorage.setItem("sendUser", result.data.sendUser);
+
         resu.data.result.forEach((e) => {
           showMessagesForGrpChat(e, resu.data.sendUser);
         });
@@ -102,7 +100,7 @@ async function groupChatInterface() {
       divvs.className = "endFlex";
       var userName = document.createElement("p");
       userName.className = "nameOfUsersInGrpEnnd";
-      userName.textContent = data.user.username;
+      // userName.textContent = data.user.username;
       var usertext = document.createElement("p");
       usertext.id = "spanMessageEndFlex";
       usertext.textContent = data.message;
@@ -124,6 +122,289 @@ async function groupChatInterface() {
       div.appendChild(divvs);
     }
   }
+  //Menu options for only group chat
+  var adminOption = document.querySelector(".adminOption");
+
+  // If adminOption button does not exist, create it
+  if (!adminOption) {
+    var adminOption = document.getElementById("userName");
+    var buttonForAdmin = document.createElement("button");
+    buttonForAdmin.onclick = adminOptions;
+    buttonForAdmin.className = "adminOption";
+    buttonForAdmin.id = "adminOption";
+    var imageOption = document.createElement("img");
+    imageOption.className = "optionMenu";
+    imageOption.src =
+      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAWElEQVR4nO3TMQ6AIBBE0a24unhPF47xjdHKkKyJS8W8koKfQMbsA6AAO9AAB+p1Zlm4L3yrmYE2CPTMgA8Cx+wn2jID5Yn4lE+WEBpaBA1NfkNDi7D00E6AOpUl4DkexAAAAABJRU5ErkJggg==";
+
+    buttonForAdmin.appendChild(imageOption);
+    adminOption.appendChild(buttonForAdmin);
+  }
+
+  async function adminOptions() {
+    var adminOption = document.body;
+    const adminDiv = document.createElement("div");
+    adminDiv.className = "adminDiv";
+    adminDiv.id = "adminDiv";
+    adminOption.appendChild(adminDiv);
+
+    //members option in menu (Group)
+    const membersInGrp = Object.assign(document.createElement("div"), {
+      className: "membersInGrp",
+      id: "membersInGrp",
+      style: "color: white;",
+      textContent: "Members",
+    });
+    adminDiv.appendChild(membersInGrp);
+    membersInGrp.onclick = membersInGrpaa;
+
+    if (admin == true) {
+      const addMembers = Object.assign(document.createElement("div"), {
+        className: "addMembersInGrp",
+        id: "addMembersInGrp",
+        style: "color: white;",
+        textContent: "Add members",
+      });
+
+      adminDiv.appendChild(addMembers);
+      addMembers.onclick = addMembersForGrp;
+    }
+  }
+
+  async function membersInGrpaa() {
+    var mainPPPP = document.getElementById("adminDiv");
+    const membersInGrpList = Object.assign(document.createElement("div"), {
+      className: "membersInGrpList",
+      id: "membersInGrpList",
+      style: "color: white;",
+    });
+    mainPPPP.appendChild(membersInGrpList);
+    //checking the user admin or not to implement add users option
+    const result = await axios.get(
+      `http://localhost:4001/user/groupMembers?groupiId=${token2}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
+
+    console.log(result.data.sendUser, "asdadsasdasdasd");
+    result.data.users.forEach((data) => {
+      showMemebersInOptions(data, result.data.sendUser);
+    });
+  }
+
+  function showMemebersInOptions(data, user) {
+    console.log(data);
+    var mainPPPP = document.getElementById("membersInGrpList");
+    const membersInGrpListDiv = Object.assign(document.createElement("li"), {
+      className: "membersInGrpListDiv",
+      id: `membersInGrpListDiv${data.user_id}`,
+      style: "color: white;",
+      style: "list-style-type: none;",
+      textContent: `${data.users.username}`,
+    });
+
+    if (data.admin == true && data.users.id == user) {
+      membersInGrpListDiv.textContent = `You - admin`;
+      membersInGrpListDiv.classList.add("admin"); // add "admin" class to the element
+    } else if (data.users.id == user) {
+      membersInGrpListDiv.textContent = `You`;
+    } else if (data.admin == true) {
+      membersInGrpListDiv.textContent = `${data.users.username} - admin`;
+      membersInGrpListDiv.classList.add("admin"); // add "admin" class to the element
+    }
+    mainPPPP.appendChild(membersInGrpListDiv);
+
+    membersInGrpListDiv.onclick = function (event) {
+      var id = this.id;
+      if (admin) {
+        if (!this.classList.contains("admin")) {
+          var removeMember = document.getElementById(`removeMember ${this.id}`);
+          var makeAdminMember = document.getElementById(
+            `makeAdminMember ${this.id}`
+          );
+          if (removeMember && makeAdminMember) {
+            mainPPPP.removeChild(removeMember);
+            mainPPPP.removeChild(makeAdminMember);
+          } else {
+            var optionsForRemove = Object.assign(document.createElement("li"), {
+              className: `removeMember`,
+              id: `removeMember ${this.id}`,
+              style:
+                "color: white; display: inline-block; list-style-type: none;",
+              textContent: `Remove`,
+            });
+            //making click function for remove button in group chat members
+            optionsForRemove.onclick = async function () {
+              const removeMemberResult = await axios.delete(
+                `http://localhost:4001/user/${data.user_id}/${token2}`
+              );
+              if (removeMemberResult.data.success == "success") {
+                document.getElementById(id).style.display = "none";
+                document.getElementById(`makeAdminMember ${id}`).remove();
+                document.getElementById(`removeMember ${id}`).remove();
+              }
+            };
+
+            mainPPPP.insertBefore(optionsForRemove, this.nextSibling);
+
+            var optionsForMakeAdmin = Object.assign(
+              document.createElement("li"),
+              {
+                className: "makeAdminMember",
+                id: `makeAdminMember ${this.id}`,
+                style:
+                  "color: white; display: inline-block; list-style-type: none;",
+                textContent: `Make Admin`,
+              }
+            );
+            //making click function for remove button in group chat members
+            optionsForMakeAdmin.onclick = async function () {
+              const makeAdminResult = await axios.put(
+                `http://localhost:4001/user/makeAdmin?userId=${data.user_id}&groupId=${token2}`
+              );
+              if (makeAdminResult.data.success == "success") {
+                membersInGrpListDiv.classList.add("admin");
+                membersInGrpListDiv.textContent = `${data.users.username} - admin`;
+
+                document.getElementById(`makeAdminMember ${id}`).remove();
+                document.getElementById(`removeMember ${id}`).remove();
+              }
+            };
+            mainPPPP.insertBefore(optionsForMakeAdmin, this.nextSibling);
+          }
+        }
+      }
+    };
+  }
+
+  //add members for group
+  function addMembersForGrp() {
+    var mainAdminDiv = document.getElementById("adminDiv");
+    const addMemebersForGrp = Object.assign(document.createElement("div"), {
+      className: "addMemebersForGrp",
+      id: "addMemebersForGrp",
+      style: "color: white;",
+    });
+    mainAdminDiv.appendChild(addMemebersForGrp);
+
+    var addMembersInput = document.createElement("input");
+    addMembersInput.placeholder = "Name, Email or Phone number";
+    addMembersInput.className = "addMembers";
+    var addMembersButton = document.createElement("button");
+    addMembersButton.textContent = "Search";
+    addMembersButton.id = "addMembersInputButton";
+    addMembersButton.className = "addMembersInputButton";
+    addMembersButton.type = "submit";
+
+    addMemebersForGrp.appendChild(addMembersInput);
+    addMemebersForGrp.appendChild(addMembersButton);
+
+    addMembersButton.addEventListener("click", async function () {
+      var inputValue = addMembersInput.value.trim();
+      if (inputValue.length === 0) {
+        // Handle empty input
+        return;
+      }
+      var searchBy = "unknown";
+      if (inputValue.includes("@")) {
+        // Input contains "@", so assume it's an email
+        searchBy = "email";
+      } else if (!isNaN(inputValue)) {
+        // Input is a number, so assume it's a phone number
+        searchBy = "phone";
+      } else {
+        // Input is not an email or phone number, so assume it's a name
+        searchBy = "name";
+      }
+
+      // Clear old searchedUser divs
+      var oldSearchedUsers = document.querySelectorAll(".searchedUser");
+      oldSearchedUsers.forEach(function (oldSearchedUser) {
+        oldSearchedUser.remove();
+      });
+      //clear error message for user not found
+      const elementToRemove = document.querySelector(".searchedUserNotFound");
+      if (elementToRemove) {
+        elementToRemove.remove();
+      }
+      // TODO: Perform search using searchBy and inputValue
+      console.log(`Searching by ${searchBy}: ${inputValue}`);
+
+      const result = await axios.get(
+        `http://localhost:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
+      );
+
+      console.log(result);
+      if (result.data.user.length != 0) {
+        // // Remove existing searchedUser div if it exists
+        // var existingSearchedUser = document.getElementById("searchedUser");
+        // if (existingSearchedUser) {
+        //   existingSearchedUser.remove();
+        // }
+        // Append new searchedUser divs
+        result.data.user.forEach((user) => {
+          var searchedUser = document.createElement("div");
+          searchedUser.className = "searchedUser";
+          searchedUser.id = `searchedUser${user.id}`;
+          // searchedUser.textContent = user.username;
+          searchedUser.innerHTML = `${user.username}`;
+          var imgForAddUser = document.createElement("img");
+          imgForAddUser.className = "imgForAddUser";
+          imgForAddUser.src =
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAaElEQVR4nO3XQQrAIAxEUY+Ye+Rk3sKbTRcWWrJps5Ba8h+4FIYRDbYGLCTJJI1z2ZdBXBcniGgkoJGIRmo2ovls+8vVb0F6Yt/zONCcG6uNXwWxLY4mo8atySBIRCMRjUQ0su0HCyUc7HrGF9/pTTAAAAAASUVORK5CYII=";
+          searchedUser.appendChild(imgForAddUser);
+          addMemebersForGrp.appendChild(searchedUser);
+          // Add the hover effect
+          searchedUser.addEventListener("mouseenter", () => {
+            searchedUser.classList.add("hovered");
+            searchedUser.innerHTML = `${user.username}<span class="block-gap">phone no: ${user.phoneNo}</span>`;
+            imgForAddUser.classList.add("hovered");
+            searchedUser.appendChild(imgForAddUser);
+          });
+          searchedUser.addEventListener("mouseleave", () => {
+            searchedUser.innerHTML = `${user.username}`;
+            searchedUser.classList.remove("hovered");
+            imgForAddUser.classList.remove("hovered");
+            searchedUser.appendChild(imgForAddUser);
+          });
+          imgForAddUser.addEventListener("click", async (event) => {
+            // document.getElementById(`searchedUser${user.id}`).textContent =
+            //   "hello";
+            // document.getElementById(`searchedUser${user.id}`).remove();
+            console.log(user.id, token2);
+            await axios.put(
+              `http://localhost:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
+            );
+          });
+        });
+      } else if (result.data.user.length == 0) {
+        const searchedUserNotFound = Object.assign(
+          document.createElement("div"),
+          {
+            className: "searchedUserNotFound",
+            innerHTML: "User not found!",
+          }
+        );
+        addMemebersForGrp.appendChild(searchedUserNotFound);
+      }
+    });
+  }
+
+  // closing adminDiv when clicking outside of the html page
+  document.getElementById("userMessages").addEventListener("click", () => {
+    const adminDiv = document.querySelector(".adminDiv");
+    if (adminDiv) {
+      adminDiv.remove();
+    }
+  });
+  // window.addEventListener("mouseup", function (event) {
+  //   console.log(event);
+  //   var pol = document.getElementById("adminDiv");
+  //   if (event.target != pol && event.target.parentNode != pol) {
+  //     pol.style.display = "none";
+  //   }
+  // });
 }
 
 //showing users in the Main Div when making relations
@@ -144,6 +425,13 @@ function showPersonalChatUsersOnScreenMain(e) {
     }
     token2 = e.id;
 
+    //removing admin option menu in personal chats
+    var userNameInInterface = document.getElementById("userName");
+    var buttonOption = document.getElementById("adminOption");
+    if (buttonOption) {
+      userNameInInterface.removeChild(buttonOption);
+    }
+
     var div = document.getElementById("userMessages");
     div.innerHTML = "";
     document.getElementById("userNameToChat").textContent = e.username;
@@ -163,7 +451,6 @@ function showPersonalChatUsersOnScreenMain(e) {
     }
 
     intervalId = setInterval(() => {
-      console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       msg();
     }, 980);
 

@@ -1,5 +1,6 @@
 const Message = require("../models/messages");
 const groupMessage = require("../models/groupMessage");
+const groupMembers = require("../models/groupMembers");
 const User = require("../models/user");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
@@ -92,8 +93,14 @@ exports.getMessageInGrpChat = async (req, res) => {
     },
   });
 
+  const admin = await groupMembers.findOne({
+    where: { user_id: req.user, group_id: req.query.group_id },
+    attributes: ["admin"],
+  });
+
   res.status(200).json({
     result,
     sendUser: req.user,
+    admin: admin.admin,
   });
 };

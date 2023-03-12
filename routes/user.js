@@ -27,4 +27,18 @@ router.post(
   userController.createGrpUsers // 6
 );
 
+router.get(
+  "/groupMembers",
+  authentication.getVerifyingIdFromToken,
+  userController.getMembersInGrp
+);
+
+router.put("/makeAdmin", userController.postMakeAdmin);
+
+router.delete("/:userId/:groupId", userController.deleteMember);
+
+router.get("/searching", userController.getSearchUser);
+
+router.put("/addMemberForGrp", userController.postAddMemberForGrp);
+
 module.exports = router;

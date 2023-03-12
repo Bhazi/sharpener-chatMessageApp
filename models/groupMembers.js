@@ -28,6 +28,10 @@ const GroupMembers = sequelize.define("GroupMembers", {
       key: "id",
     },
   },
+  admin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: true,
+  },
 });
 
 module.exports = GroupMembers;

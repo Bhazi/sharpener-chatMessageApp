@@ -217,6 +217,10 @@ img {
   font-weight: 600;
 }
 
+.grpInput:focus {
+  outline-style: none;
+}
+
 .grpSubmit {
   position: relative;
   top: 47px;
@@ -294,11 +298,282 @@ p.userNameToChat {
   position: absolute;
   left: 35px;
   top: 10px;
-  font-size: 1.4rem;
+  font-size: 1.24rem;
   font-weight: 400;
   color: rgb(248, 248, 248);
   font-family: "Golos Text", sans-serif;
 }
+
+.adminOption {
+  position: absolute;
+  top: 34px;
+  left: 896px;
+  background-color: #60606a;
+  border: none;
+}
+
+/* .adminDiv {
+  position: absolute;
+  top: 0px;
+  left: 1024px;
+  height: 667px;
+  width: 336px;
+  background-color: rgb(63 62 62);
+} */
+.adminDiv {
+  position: absolute;
+  top: 0;
+  left: 1060px;
+  height: 75%;
+  width: 300px;
+  background-color: rgb(63, 62, 62);
+  animation-name: slidein;
+  animation-duration: 0.55s;
+  border-bottom-left-radius: 12px;
+}
+
+@keyframes slidein {
+  from {
+    height: 0px;
+  }
+
+  to {
+    height: 75%;
+  }
+}
+
+.optionMenu {
+  height: 18px;
+}
+
+.membersInGrp {
+  position: relative;
+  top: 13px;
+  padding-top: 9px;
+  padding-bottom: 0px;
+  padding-left: 26px;
+  height: 30px;
+  width: auto;
+  font-family: "Golos Text", sans-serif;
+}
+.membersInGrp:hover {
+  background-color: rgb(78, 77, 77);
+}
+
+.membersInGrpList {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 75%;
+  width: 300px;
+  background-color: rgb(63 62 62);
+}
+
+.membersInGrpListDiv {
+  border: 1px solid rgb(78, 77, 77);
+  position: relative;
+  top: 12px;
+  height: 27px;
+  font-size: 0.88rem;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  background-color: #464442;
+  padding-left: 18px;
+  width: 258px;
+  margin-top: 5px;
+  padding-bottom: 2px;
+  padding-top: 9px;
+  border-radius: 9px;
+  left: 12px;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+}
+
+.removeMember {
+  position: relative;
+  top: 19px;
+  left: 27px;
+  font-size: 0.75rem;
+  padding-top: 3px;
+  padding-bottom: 0px;
+  padding-left: 7px;
+  height: 19px;
+  width: 54px;
+  border: 1px solid white;
+  font-family: "Golos Text", sans-serif;
+  margin-bottom: 10px;
+}
+
+.makeAdminMember {
+  position: relative;
+  top: 19px;
+  left: 27px;
+  font-size: 0.75rem;
+  padding-top: 3px;
+  padding-bottom: 0px;
+  padding-left: 7px;
+  height: 19px;
+  width: 78px;
+  margin-right: 20px;
+  border: 1px solid white;
+  margin-top: 4px;
+  font-family: "Golos Text", sans-serif;
+  margin-bottom: 0px;
+}
+
+.removeMember:hover,
+.makeAdminMember:hover {
+  cursor: pointer;
+  background-color: #414144;
+  border-color: #b0b0b9;
+}
+
+.addMembersInGrp {
+  position: relative;
+  top: 13px;
+  padding-top: 9px;
+  padding-bottom: 0px;
+  padding-left: 26px;
+  height: 30px;
+  width: auto;
+  font-family: "Golos Text", sans-serif;
+}
+
+.addMembersInGrp:hover {
+  background-color: rgb(78, 77, 77);
+}
+
+.addMemebersForGrp {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 75%;
+  width: 300px;
+  background-color: rgb(63 62 62);
+}
+
+.addMembers {
+  position: relative;
+  top: 19px;
+  width: 253px;
+  height: 29px;
+  left: 15px;
+  border-radius: 3px;
+  border: none;
+  padding-left: 11px;
+  font-family: "Libre Franklin", sans-serif;
+  font-weight: 600;
+  font-size: 0.83rem;
+}
+
+.addMembers:focus {
+  outline-style: none;
+}
+
+.addMembersInputButton {
+  position: relative;
+  top: 29px;
+  height: 30px;
+  width: 64px;
+  left: 217px;
+  box-shadow: rgb(50 50 93 / 25%) 0px 2px 5px -1px,
+    rgb(0 0 0 / 30%) 0px 1px 3px -1px;
+  cursor: pointer;
+  font-family: "Golos Text", sans-serif;
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  font-size: 0.84rem;
+  padding-bottom: 4px;
+  background-color: rgb(104 99 99);
+  color: rgb(252 255 255);
+  border: 1px solid rgb(44, 44, 43);
+  border-radius: 7px;
+}
+
+.addMembersInputButton:focus {
+  outline-style: none;
+}
+
+.addMembersInputButton:hover {
+  background-color: #525256;
+}
+
+.searchedUser {
+  margin-top: 3px;
+  border: 1px solid rgb(106 103 103);
+  position: relative;
+  font-size: 0.93rem;
+  height: 17px;
+  left: 14px;
+  width: 253px;
+  border-radius: 4px;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  padding-left: 11px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  top: 42px;
+}
+
+.block-gap {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.83rem;
+  color: #d6d6d6;
+}
+.searchedUser.hovered {
+  margin-top: 3px;
+  border: 1px solid rgb(129, 126, 126);
+  position: relative;
+  font-size: 0.93rem;
+  height: 38px;
+  left: 14px;
+  width: 253px;
+  border-radius: 4px;
+  color: #f1f1f1;
+  font-family: "Golos Text", sans-serif;
+  padding-left: 11px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  top: 42px;
+  outline-style: none;
+}
+
+.imgForAddUser {
+  float: right;
+  height: 21px;
+  margin-right: 4px;
+}
+
+.imgForAddUser.hovered {
+  float: right;
+  position: relative;
+  top: -31px;
+  height: 21px;
+}
+
+.searchedUserNotFound {
+  position: relative;
+  top: 38px;
+  color: #f9ebeb;
+  left: 78px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 0.97rem;
+  font-weight: 400;
+  width: fit-content;
+  animation: shake 0.8s;
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(9px);
+  }
+  50% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(9px);
+  }
+}
+
 .userMessages {
   border-left: 6px solid rgb(184, 133, 133);
   position: absolute;
@@ -369,7 +644,8 @@ p.userNameToChat {
   margin-right: 37px;
   color: rgb(47, 47, 48);
   font-size: 0.9rem;
-  /* position: relative; */
+  position: relative;
+  top: 4px;
   font-weight: 400;
   border-top-right-radius: 0px;
   border-top-left-radius: 7px;
@@ -381,7 +657,7 @@ p.userNameToChat {
   /* max-width: 150px; */
   /* width: auto; */
   max-width: 300px;
-  margin: 0px 33px;
+  margin: 0px 26px;
 }
 
 .endFlex {
@@ -400,24 +676,25 @@ p.userNameToChat {
   color: #f5f5f5;
 }
 
-.nameOfUsersInGrpEnnd {
+/* .nameOfUsersInGrpEnnd {
   display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-bottom: 2px;
-    font-size: 0.93rem;
-    color: white;
-    margin-right: 16px;
-    font-family: 'Nunito', sans-serif;
-    margin-top: 6px;
-}
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 2px;
+  font-size: 0.93rem;
+  color: white;
+  margin-right: 16px;
+  font-family: "Nunito", sans-serif;
+  margin-top: 6px;
+} */
 
 .nameOfUsersInGrpStarrt {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
   margin: 0px;
+  margin-top: 6px;
 }
 
 #spanMessageEndFlex {
@@ -433,23 +710,24 @@ p.userNameToChat {
   background-color: #f0efef;
   max-width: 300px;
   margin-right: 0px;
-  margin-top: 3px;
+  margin-top: -37px;
+  margin-right: 16px;
 }
 
 #spanMessageStartFlex {
   color: rgb(47, 47, 48);
-    font-size: 0.9rem;
-    font-weight: 400;
-    border-top-right-radius: 7px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-    padding: 8px 10px;
-    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-    background-color: #f0efef;
-    width: max-content;
-    max-width: 300px;
-    margin-top: 3px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  padding: 8px 10px;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background-color: #f0efef;
+  width: max-content;
+  max-width: 300px;
+  margin-top: 3px;
 }
 
 .inputAndSubmit {
@@ -486,6 +764,10 @@ p.userNameToChat {
   font-size: 0.91rem;
   padding-bottom: 5px;
 }
+
+/* .messagingBox:focus {
+  background-color: rgb(151, 151, 151);
+} */
 
 .sendMessage {
   position: absolute;
