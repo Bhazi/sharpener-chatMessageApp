@@ -10,7 +10,7 @@ document.getElementById("submitChats").addEventListener("click", async () => {
 
   await axios
     .post(
-      `http://localhost:4001/chats?reciever=${token2}`,
+      `http://44.195.25.209:4001/chats?reciever=${token2}`,
       {
         chats: chatsFromUser,
         for: `${forChat}`,
@@ -32,7 +32,7 @@ document.getElementById("submitChats").addEventListener("click", async () => {
 
 window.addEventListener("DOMContentLoaded", async () => {
   axios
-    .get("http://localhost:4001/user/relationshipInScreen", {
+    .get("http://44.195.25.209:4001/user/relationshipInScreen", {
       headers: { Authorization: token },
     })
     .then((result) => {
@@ -73,7 +73,7 @@ async function groupChatInterface() {
 
   const msg = async () => {
     await axios
-      .get(`http://localhost:4001/groupChatMessage?group_id=${this.id}`, {
+      .get(`http://44.195.25.209:4001/groupChatMessage?group_id=${this.id}`, {
         headers: { Authorization: token },
       })
       .then((resu) => {
@@ -191,7 +191,7 @@ async function groupChatInterface() {
     mainPPPP.appendChild(membersInGrpList);
     //checking the user admin or not to implement add users option
     const result = await axios.get(
-      `http://localhost:4001/user/groupMembers?groupiId=${token2}`,
+      `http://44.195.25.209:4001/user/groupMembers?groupiId=${token2}`,
       {
         headers: { Authorization: token },
       }
@@ -247,7 +247,7 @@ async function groupChatInterface() {
             //making click function for remove button in group chat members
             optionsForRemove.onclick = async function () {
               const removeMemberResult = await axios.delete(
-                `http://localhost:4001/user/${data.user_id}/${token2}`
+                `http://44.195.25.209:4001/user/${data.user_id}/${token2}`
               );
               if (removeMemberResult.data.success == "success") {
                 document.getElementById(id).style.display = "none";
@@ -271,7 +271,7 @@ async function groupChatInterface() {
             //making click function for remove button in group chat members
             optionsForMakeAdmin.onclick = async function () {
               const makeAdminResult = await axios.put(
-                `http://localhost:4001/user/makeAdmin?userId=${data.user_id}&groupId=${token2}`
+                `http://44.195.25.209:4001/user/makeAdmin?userId=${data.user_id}&groupId=${token2}`
               );
               if (makeAdminResult.data.success == "success") {
                 membersInGrpListDiv.classList.add("admin");
@@ -342,7 +342,7 @@ async function groupChatInterface() {
       console.log(`Searching by ${searchBy}: ${inputValue}`);
 
       const result = await axios.get(
-        `http://localhost:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
+        `http://44.195.25.209:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
       );
 
       console.log(result);
@@ -384,7 +384,7 @@ async function groupChatInterface() {
             // document.getElementById(`searchedUser${user.id}`).remove();
             console.log(user.id, token2);
             await axios.put(
-              `http://localhost:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
+              `http://44.195.25.209:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
             );
           });
         });
@@ -453,7 +453,7 @@ function showPersonalChatUsersOnScreenMain(e) {
 
     async function msg() {
       await axios
-        .get(`http://localhost:4001/messageChat?reciever_id=${e.id}`, {
+        .get(`http://44.195.25.209:4001/messageChat?reciever_id=${e.id}`, {
           headers: { Authorization: token },
         })
         .then((result) => {
@@ -562,7 +562,7 @@ document.getElementById("nav").addEventListener("click", async () => {
     usersMainDiv.textContent = "Users";
     createGrpDiv.appendChild(usersMainDiv);
 
-    const result = await axios.get("http://localhost:4001/createGrpUsers", {
+    const result = await axios.get("http://44.195.25.209:4001/createGrpUsers", {
       headers: { Authorization: token },
     });
 
@@ -595,7 +595,7 @@ document.getElementById("nav").addEventListener("click", async () => {
       const groupName = document.getElementsByClassName("grpInput")[0].value;
 
       axios.post(
-        "http://localhost:4001/user/createGrpUsers",
+        "http://44.195.25.209:4001/user/createGrpUsers",
         {
           groupName: groupName,
           array: values,
@@ -603,7 +603,7 @@ document.getElementById("nav").addEventListener("click", async () => {
         { headers: { Authorization: token } }
       );
 
-      window.location.href = "http://localhost:4001/chatPage/chatPage.html";
+      window.location.href = "http://44.195.25.209:4001/chatPage/chatPage.html";
     });
   });
 
@@ -636,7 +636,7 @@ document.getElementById("nav").addEventListener("click", async () => {
       newPersMsgDiv.appendChild(buttonForReversePersMsg);
       maiDiv.appendChild(newPersMsgDiv);
 
-      const result = await axios.get(`http://localhost:4001/hello`, {
+      const result = await axios.get(`http://44.195.25.209:4001/hello`, {
         headers: { Authorization: token },
       });
 
@@ -657,7 +657,7 @@ document.getElementById("nav").addEventListener("click", async () => {
         newwDiv.addEventListener("click", async () => {
           await axios
             .post(
-              "http://localhost:4001/user/relationship",
+              "http://44.195.25.209:4001/user/relationship",
               {
                 relatedFriendId: e.id,
               },

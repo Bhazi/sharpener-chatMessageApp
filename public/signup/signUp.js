@@ -6,7 +6,7 @@ async function signup(e) {
   const passwordForm = document.getElementById("password").value;
 
   await axios
-    .post(`http://localhost:4001/user/signup`, {
+    .post(`http://44.195.25.209:4001/user/signup`, {
       name: nameForm,
       email: emailForm,
       phone: phoneForm,
