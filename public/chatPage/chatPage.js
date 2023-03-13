@@ -90,7 +90,7 @@ async function groupChatInterface() {
   };
 
   // intervalId = setInterval(() => {
-    msg();
+  msg();
   // }, 980);
 
   let usssse = null;
@@ -401,20 +401,25 @@ async function groupChatInterface() {
     });
   }
 
-  // closing adminDiv when clicking outside of the html page
-  document.getElementById("userMessages").addEventListener("click", () => {
+  // Define a function to handle clicks on the userMessages and navBar elements
+  function handleElementClick(event) {
+    // Get the adminDiv element
     const adminDiv = document.querySelector(".adminDiv");
+
+    // Check if the adminDiv element exists
     if (adminDiv) {
+      // Remove the adminDiv element from the DOM
       adminDiv.remove();
     }
-  });
-  // window.addEventListener("mouseup", function (event) {
-  //   console.log(event);
-  //   var pol = document.getElementById("adminDiv");
-  //   if (event.target != pol && event.target.parentNode != pol) {
-  //     pol.style.display = "none";
-  //   }
-  // });
+  }
+
+  // Add click event listeners to the userMessages and navBar elements
+  document
+    .getElementById("userMessages")
+    .addEventListener("click", handleElementClick);
+  document
+    .getElementById("navBar")
+    .addEventListener("click", handleElementClick);
 }
 
 //showing users in the Main Div when making relations
@@ -461,7 +466,7 @@ function showPersonalChatUsersOnScreenMain(e) {
     }
 
     // intervalId = setInterval(() => {
-      msg();
+    msg();
     // }, 980);
 
     console.log("after setInterval");
