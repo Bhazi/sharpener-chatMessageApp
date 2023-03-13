@@ -89,9 +89,9 @@ async function groupChatInterface() {
       });
   };
 
-  // intervalId = setInterval(() => {
-  msg();
-  // }, 980);
+  intervalId = setInterval(() => {
+    msg();
+  }, 980);
 
   let usssse = null;
 
@@ -465,9 +465,9 @@ function showPersonalChatUsersOnScreenMain(e) {
         });
     }
 
-    // intervalId = setInterval(() => {
-    msg();
-    // }, 980);
+    intervalId = setInterval(() => {
+      msg();
+    }, 980);
 
     console.log("after setInterval");
   });
