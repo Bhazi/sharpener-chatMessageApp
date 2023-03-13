@@ -662,9 +662,11 @@ p.userNameToChat {
 
 .endFlex {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: flex-end;
-  margin-top: -3px;
+  margin-top: 0;
+  margin-bottom: 0px;
 }
 
 .startFlex {
@@ -694,6 +696,7 @@ p.userNameToChat {
   align-items: flex-start;
   font-family: "Nunito", sans-serif;
   margin: 0px;
+  font-size: 0.84rem;
   margin-top: 6px;
 }
 
@@ -709,8 +712,8 @@ p.userNameToChat {
   box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
   background-color: #f0efef;
   max-width: 300px;
-  margin-right: 0px;
-  margin-top: -37px;
+  margin-bottom: -9px;
+  margin-top: -16px;
   margin-right: 16px;
 }
 
@@ -728,6 +731,7 @@ p.userNameToChat {
   width: max-content;
   max-width: 300px;
   margin-top: 3px;
+  margin-bottom: 0px;
 }
 
 .inputAndSubmit {

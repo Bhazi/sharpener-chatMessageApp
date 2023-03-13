@@ -89,9 +89,11 @@ async function groupChatInterface() {
       });
   };
 
-  intervalId = setInterval(() => {
+  // intervalId = setInterval(() => {
     msg();
-  }, 980);
+  // }, 980);
+
+  let usssse = null;
 
   function showMessagesForGrpChat(data, user) {
     if (data.user.id == user) {
@@ -107,13 +109,21 @@ async function groupChatInterface() {
       userName.appendChild(usertext);
       divvs.appendChild(userName);
       div.appendChild(divvs);
+      usssse = null;
     } else {
       var div = document.getElementById("userMessages");
       var divvs = document.createElement("div");
       divvs.className = "startFlex";
       var userName = document.createElement("p");
       userName.className = "nameOfUsersInGrpStarrt";
-      userName.textContent = data.user.username;
+      if (usssse == null) {
+        usssse = data.user.username;
+        userName.textContent = data.user.username;
+      } else if (usssse == data.user.username) {
+      } else {
+        userName.textContent = data.user.username;
+      }
+
       var usertext = document.createElement("p");
       usertext.id = "spanMessageStartFlex";
       usertext.textContent = data.message;
@@ -450,9 +460,9 @@ function showPersonalChatUsersOnScreenMain(e) {
         });
     }
 
-    intervalId = setInterval(() => {
+    // intervalId = setInterval(() => {
       msg();
-    }, 980);
+    // }, 980);
 
     console.log("after setInterval");
   });
