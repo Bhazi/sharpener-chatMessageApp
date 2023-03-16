@@ -1,16 +1,22 @@
 var token = localStorage.getItem("token");
-// var token2 = localStorage.getItem("sendUser");
 var token2 = null;
 var forChat = null;
 var admin = null;
+let usssse = null;
+
+var socket = io();
+
+function handleClick(event) {
+  console.log("it is worked");
+}
 
 document.getElementById("submitChats").addEventListener("click", async () => {
   var inputBox = document.getElementById("userChats");
   var chatsFromUser = inputBox.value;
-
+  console.log(token2);
   await axios
     .post(
-      `http://44.195.25.209:4001/chats?reciever=${token2}`,
+      `http://localhost:4001/chats?reciever=${token2}`,
       {
         chats: chatsFromUser,
         for: `${forChat}`,
@@ -18,21 +24,20 @@ document.getElementById("submitChats").addEventListener("click", async () => {
       { headers: { Authorization: token } }
     )
     .then((result) => {
-      //   saveToLocalStorage(result.data);
-
+      socket.emit("new-data", chatsFromUser);
       inputBox.value = "";
       setTimeout(() => {
         // Scroll to the bottom of the page
         const lastChild = userMessages.lastElementChild;
         lastChild.scrollIntoView({ behavior: "smooth", block: "end" });
-      }, 1000);
+      }, 1500);
     })
     .catch((err) => console.log(err));
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-  axios
-    .get("http://44.195.25.209:4001/user/relationshipInScreen", {
+  await axios
+    .get("http://localhost:4001/user/relationshipInScreen", {
       headers: { Authorization: token },
     })
     .then((result) => {
@@ -47,7 +52,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     .catch((err) => console.log(err));
 });
 
-let intervalId = null;
+let currentNewwDiv = null; // keeps track of the currently selected group ID
 
 function showGroupChatOnScreenMain(data) {
   var navBar = document.getElementById("navBar");
@@ -56,46 +61,59 @@ function showGroupChatOnScreenMain(data) {
   newwDiv.style.color = "white";
   newwDiv.className = "userNameDivMain";
   newwDiv.textContent = data.name;
-  newwDiv.onclick = groupChatInterface;
-
+  newwDiv.onclick = (event) => {
+    if (currentNewwDiv !== null) {
+      var poo = document.getElementById(currentNewwDiv);
+      poo.removeEventListener("click", groupChatInterface);
+    }
+    currentNewwDiv = event.target.id;
+    groupChatInterface(event.target);
+  };
   navBar.appendChild(newwDiv);
 }
 
-async function groupChatInterface() {
+function groupChatInterface(target) {
   forChat = "group";
-  if (intervalId != null) {
-    clearInterval(intervalId);
-  }
-  token2 = this.id;
+  token2 = target.id;
+  // token2 = data;
   var div = document.getElementById("userMessages");
   div.innerHTML = "";
-  document.getElementById("userNameToChat").textContent = this.textContent;
+  document.getElementById("userNameToChat").textContent = target.textContent;
 
   const msg = async () => {
-    await axios
-      .get(`http://44.195.25.209:4001/groupChatMessage?group_id=${this.id}`, {
-        headers: { Authorization: token },
-      })
-      .then((resu) => {
-        console.log(resu);
-        admin = resu.data.admin;
-        const div = document.getElementById("userMessages");
-        div.innerHTML = ""; // Clear existing messages
-        // localStorage.setItem("sendUser", result.data.sendUser);
+    try {
+      await axios
+        .get(`http://localhost:4001/groupChatMessage?group_id=${target.id}`, {
+          headers: { Authorization: token },
+        })
+        .then((resu) => {
+          console.log(resu, "resu");
+          admin = resu.data.admin;
+          const div = document.getElementById("userMessages");
+          div.innerHTML = ""; // Clear existing messages
+          // localStorage.setItem("sendUser", result.data.sendUser);
 
-        resu.data.result.forEach((e) => {
-          showMessagesForGrpChat(e, resu.data.sendUser);
+          resu.data.result.forEach((e) => {
+            // console.log(e);
+            showMessagesForGrpChat(e, resu.data.sendUser);
+            // console.log(e)
+          });
         });
-      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  intervalId = setInterval(() => {
-    msg();
-  }, 980);
+  setTimeout(async () => {
+    await msg();
+  }, 0);
 
-  let usssse = null;
+  socket.on("aaaaaa", async (data) => {
+    await msg();
+  });
 
   function showMessagesForGrpChat(data, user) {
+    // console.log("data is", data.user.id, data.message, "and user is ", user);
     if (data.user.id == user) {
       var div = document.getElementById("userMessages");
       var divvs = document.createElement("div");
@@ -121,6 +139,7 @@ async function groupChatInterface() {
         userName.textContent = data.user.username;
       } else if (usssse == data.user.username) {
       } else {
+        usssse = data.user.username;
         userName.textContent = data.user.username;
       }
 
@@ -191,7 +210,7 @@ async function groupChatInterface() {
     mainPPPP.appendChild(membersInGrpList);
     //checking the user admin or not to implement add users option
     const result = await axios.get(
-      `http://44.195.25.209:4001/user/groupMembers?groupiId=${token2}`,
+      `http://localhost:4001/user/groupMembers?groupiId=${token2}`,
       {
         headers: { Authorization: token },
       }
@@ -247,7 +266,7 @@ async function groupChatInterface() {
             //making click function for remove button in group chat members
             optionsForRemove.onclick = async function () {
               const removeMemberResult = await axios.delete(
-                `http://44.195.25.209:4001/user/${data.user_id}/${token2}`
+                `http://localhost:4001/user/${data.user_id}/${token2}`
               );
               if (removeMemberResult.data.success == "success") {
                 document.getElementById(id).style.display = "none";
@@ -271,7 +290,7 @@ async function groupChatInterface() {
             //making click function for remove button in group chat members
             optionsForMakeAdmin.onclick = async function () {
               const makeAdminResult = await axios.put(
-                `http://44.195.25.209:4001/user/makeAdmin?userId=${data.user_id}&groupId=${token2}`
+                `http://localhost:4001/user/makeAdmin?userId=${data.user_id}&groupId=${token2}`
               );
               if (makeAdminResult.data.success == "success") {
                 membersInGrpListDiv.classList.add("admin");
@@ -342,7 +361,7 @@ async function groupChatInterface() {
       console.log(`Searching by ${searchBy}: ${inputValue}`);
 
       const result = await axios.get(
-        `http://44.195.25.209:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
+        `http://localhost:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
       );
 
       console.log(result);
@@ -381,10 +400,10 @@ async function groupChatInterface() {
           imgForAddUser.addEventListener("click", async (event) => {
             // document.getElementById(`searchedUser${user.id}`).textContent =
             //   "hello";
-            // document.getElementById(`searchedUser${user.id}`).remove();
+            document.getElementById(`searchedUser${user.id}`).remove();
             console.log(user.id, token2);
             await axios.put(
-              `http://44.195.25.209:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
+              `http://localhost:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
             );
           });
         });
@@ -434,10 +453,8 @@ function showPersonalChatUsersOnScreenMain(e) {
   navBar.appendChild(newwDiv);
 
   newwDiv.addEventListener("click", async () => {
+    console.log("clicked in personal");
     forChat = "personal";
-    if (intervalId != null) {
-      clearInterval(intervalId);
-    }
     token2 = e.id;
 
     //removing admin option menu in personal chats
@@ -453,7 +470,7 @@ function showPersonalChatUsersOnScreenMain(e) {
 
     async function msg() {
       await axios
-        .get(`http://44.195.25.209:4001/messageChat?reciever_id=${e.id}`, {
+        .get(`http://localhost:4001/messageChat?reciever_id=${e.id}`, {
           headers: { Authorization: token },
         })
         .then((result) => {
@@ -465,11 +482,13 @@ function showPersonalChatUsersOnScreenMain(e) {
         });
     }
 
-    intervalId = setInterval(() => {
-      msg();
-    }, 980);
+    socket.on("aaaaaa", async (data) => {
+      await msg();
+    });
 
-    console.log("after setInterval");
+    setTimeout(async () => {
+      await msg();
+    }, 0);
   });
 }
 
@@ -562,7 +581,7 @@ document.getElementById("nav").addEventListener("click", async () => {
     usersMainDiv.textContent = "Users";
     createGrpDiv.appendChild(usersMainDiv);
 
-    const result = await axios.get("http://44.195.25.209:4001/createGrpUsers", {
+    const result = await axios.get("http://localhost:4001/createGrpUsers", {
       headers: { Authorization: token },
     });
 
@@ -595,7 +614,7 @@ document.getElementById("nav").addEventListener("click", async () => {
       const groupName = document.getElementsByClassName("grpInput")[0].value;
 
       axios.post(
-        "http://44.195.25.209:4001/user/createGrpUsers",
+        "http://localhost:4001/user/createGrpUsers",
         {
           groupName: groupName,
           array: values,
@@ -603,7 +622,7 @@ document.getElementById("nav").addEventListener("click", async () => {
         { headers: { Authorization: token } }
       );
 
-      window.location.href = "http://44.195.25.209:4001/chatPage/chatPage.html";
+      window.location.href = "http://localhost:4001/chatPage/chatPage.html";
     });
   });
 
@@ -636,7 +655,7 @@ document.getElementById("nav").addEventListener("click", async () => {
       newPersMsgDiv.appendChild(buttonForReversePersMsg);
       maiDiv.appendChild(newPersMsgDiv);
 
-      const result = await axios.get(`http://44.195.25.209:4001/hello`, {
+      const result = await axios.get(`http://localhost:4001/hello`, {
         headers: { Authorization: token },
       });
 
@@ -657,7 +676,7 @@ document.getElementById("nav").addEventListener("click", async () => {
         newwDiv.addEventListener("click", async () => {
           await axios
             .post(
-              "http://44.195.25.209:4001/user/relationship",
+              "http://localhost:4001/user/relationship",
               {
                 relatedFriendId: e.id,
               },

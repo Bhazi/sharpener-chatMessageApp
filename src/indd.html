@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="sss"><button id="blue">start</button></div>
+    <script>
+      document.getElementById("blue").addEventListener("click", () => {
+        console.log("hello");
+      });
+      var currentNewwDiv = null;
+      var sss = document.getElementById("sss");
+      for (var i = 0; i < 5; i++) {
+        var ee = document.createElement("button");
+        ee.textContent = "bas";
+        ee.id = i;
+        ee.onclick = function () {
+          handleDivClick(this);
+        };
+        sss.appendChild(ee);
+
+        function handleDivClick(clickedDiv) {
+          console.log(currentNewwDiv, "th eee dddivvv first");
+          console.log(clickedDiv);
+          if (currentNewwDiv !== clickedDiv.id) {
+            // // If the clicked div is not the same as the current div, remove the event listener from the previous div (if there is one)
+            if (currentNewwDiv !== null) {
+              var prevDiv = document.getElementById(currentNewwDiv);
+              prevDiv.removeEventListener("click", handleDivClick);
+            }
+            currentNewwDiv = clickedDiv.id;
+            console.log(currentNewwDiv, "theee dddivvv");
+            clickedDiv.addEventListener("click", handleDivClick);
+            // console.log("as");
+          }
+        }
+      }
+      //   console.log(currentNewwDiv, "th eee dddivvv first");
+      //   if (currentNewwDiv !== clickedDiv.id) {
+      //     // If the clicked div is not the same as the current div, remove the event listener from the previous div (if there is one)
+      //     if (currentNewwDiv !== null) {
+      //       var prevDiv = document.getElementById(currentNewwDiv);
+      //       prevDiv.removeEventListener("click", handleDivClick);
+      //     }
+      //     // Set the new currentNewwDiv value and add the event listener to the clicked div
+      //     currentNewwDiv = clickedDiv.id;
+      //     console.log(currentNewwDiv, "theee dddivvv");
+      //     clickedDiv.addEventListener("click", handleDivClick);
+      //     groupChatInterface(clickedDiv);
+      //   }
+      // }
+
+      // function groupChatInterface(target) {
+      //   // ...
+      // }
+
+      //   ee.onclick = (event) => {
+      //     if (ty !== null) {
+      //       var poo = document.getElementById(ty);
+      //       poo.removeEventListener("click", hi);
+      //     }
+      //     ty = event.target.id;
+      //     hi(event.target);
+      //   };
+      //   sss.appendChild(ee);
+      // }
+
+      // function hi(event) {
+      //   console.log(ty, "from ty");
+      //   console.log(event);
+      // }
+    </script>
+  </body>
+</html>

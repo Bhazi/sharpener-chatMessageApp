@@ -41,4 +41,8 @@ router.get("/searching", userController.getSearchUser);
 
 router.put("/addMemberForGrp", userController.postAddMemberForGrp);
 
+
+//////sample
+router.post("/asd",userController.samplePost)
+router.get("/getSamples",userController.getSamples)
 module.exports = router;

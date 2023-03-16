@@ -4,7 +4,7 @@ async function signup(e) {
   const passwordForm = document.getElementById("password").value;
 
   await axios
-    .post(`http://44.195.25.209:4001/user/login`, {
+    .post(`http://localhost:4001/user/login`, {
       email: emailForm,
       password: passwordForm,
     })
@@ -12,7 +12,7 @@ async function signup(e) {
       if (result.status == 200) {
         alert("Successfully logged ! ");
         localStorage.setItem("token", result.data.token);
-        // window.location = "http://44.195.25.209:4001/messageInterface";
+        // window.location = "http://localhost:4001/messageInterface";
         window.location.href = "../chatPage/chatPage.html";
       }
     })

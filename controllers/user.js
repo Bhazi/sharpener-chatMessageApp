@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const GroupName = require("../models/groupName");
 const { where } = require("sequelize");
+const Sample = require("../models/sample");
 
 exports.postSignUp = (req, res, next) => {
   var { name, email, phone, password } = req.body;
@@ -238,5 +239,17 @@ exports.postAddMemberForGrp = async (req, res) => {
   await groupMembers.create({
     user_id: req.query.userId,
     group_id: req.query.groupId,
+  });
+};
+
+exports.samplePost = async (req, res) => {
+  await Sample.create({ username: req.body.name }).then((result) => {
+    res.send(result);
+  });
+};
+
+exports.getSamples = async (req, res) => {
+  await Sample.findAll().then((result) => {
+    res.send(result);
   });
 };

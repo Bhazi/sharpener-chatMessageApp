@@ -14,19 +14,17 @@ exports.postChats = async (req, res) => {
         receiver_id: req.query.reciever,
       });
 
-      console.log(result);
-      res.status(201).json();
+      res.status(201).json(result);
     } else {
       const result = await groupMessage.create({
         GroupNameId: req.query.reciever,
         userId: req.user,
         message: req.body.chats,
       });
-      console.log(result);
-      res.status(201).json();
+      res.status(201).json(result);
     }
   } catch (err) {
-    res.status(401).json();
+    res.status(401).json(err);
   }
 };
 
