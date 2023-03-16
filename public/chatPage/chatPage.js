@@ -61,14 +61,14 @@ function showGroupChatOnScreenMain(data) {
   newwDiv.style.color = "white";
   newwDiv.className = "userNameDivMain";
   newwDiv.textContent = data.name;
-  newwDiv.onclick = (event) => {
-    if (currentNewwDiv !== null) {
-      var poo = document.getElementById(currentNewwDiv);
-      poo.removeEventListener("click", groupChatInterface);
-    }
-    currentNewwDiv = event.target.id;
-    groupChatInterface(event.target);
-  };
+  // newwDiv.onclick = (event) => {
+  //   if (currentNewwDiv !== null) {
+  //     var poo = document.getElementById(currentNewwDiv);
+  //     poo.removeEventListener("click", groupChatInterface);
+  //   }
+  //   currentNewwDiv = event.target.id;
+  //   groupChatInterface(event.target);
+  // };
   navBar.appendChild(newwDiv);
 }
 
