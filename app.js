@@ -149,8 +149,15 @@ io.on("connection", (socket) => {
     console.log("A user disconnected");
   });
 
-  socket.on("new-data", (sss) => {
-    io.emit("aaaaaa", sss);
+  // socket.on("new-data", (sss) => {
+  //   console.log(
+  //     "bassssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss1"
+  //   );
+  //   io.emit("aaaaaa", sss);
+  // });
+
+  socket.on("new-data", function (data) {
+    io.emit("aaaaaa", data);
   });
 });
 

@@ -6,14 +6,11 @@ let usssse = null;
 
 var socket = io();
 
-function handleClick(event) {
-  console.log("it is worked");
-}
-
 document.getElementById("submitChats").addEventListener("click", async () => {
   var inputBox = document.getElementById("userChats");
   var chatsFromUser = inputBox.value;
-  console.log(token2);
+  // socket.emit("new-data", chatsFromUser);
+  socket.emit("new-data", forChat);
   await axios
     .post(
       `http://localhost:4001/chats?reciever=${token2}`,
@@ -23,8 +20,7 @@ document.getElementById("submitChats").addEventListener("click", async () => {
       },
       { headers: { Authorization: token } }
     )
-    .then((result) => {
-      socket.emit("new-data", chatsFromUser);
+    .then(() => {
       inputBox.value = "";
       setTimeout(() => {
         // Scroll to the bottom of the page
@@ -61,56 +57,51 @@ function showGroupChatOnScreenMain(data) {
   newwDiv.style.color = "white";
   newwDiv.className = "userNameDivMain";
   newwDiv.textContent = data.name;
-  // newwDiv.onclick = (event) => {
-  //   if (currentNewwDiv !== null) {
-  //     var poo = document.getElementById(currentNewwDiv);
-  //     poo.removeEventListener("click", groupChatInterface);
-  //   }
-  //   currentNewwDiv = event.target.id;
-  //   groupChatInterface(event.target);
-  // };
+  newwDiv.onclick = (event) => {
+    groupChatInterface(event.target);
+  };
   navBar.appendChild(newwDiv);
 }
 
-function groupChatInterface(target) {
+socket.on("aaaaaa", function (forchat) {
+  if (forchat == "group") {
+    setTimeout(() => {
+      // groupChatInterface(currentNewwDiv);
+      msg(currentNewwDiv)
+    }, 1000);
+  }
+});
+
+function groupChatInterface(data) {
+  currentNewwDiv = data;
   forChat = "group";
-  token2 = target.id;
-  // token2 = data;
+  token2 = data.id;
+
   var div = document.getElementById("userMessages");
   div.innerHTML = "";
-  document.getElementById("userNameToChat").textContent = target.textContent;
+  document.getElementById("userNameToChat").textContent = data.textContent;
+  msg(data);
+}
 
-  const msg = async () => {
-    try {
-      await axios
-        .get(`http://localhost:4001/groupChatMessage?group_id=${target.id}`, {
-          headers: { Authorization: token },
-        })
-        .then((resu) => {
-          console.log(resu, "resu");
-          admin = resu.data.admin;
-          const div = document.getElementById("userMessages");
-          div.innerHTML = ""; // Clear existing messages
-          // localStorage.setItem("sendUser", result.data.sendUser);
+const msg = async (data) => {
+  try {
+    await axios
+      .get(`http://localhost:4001/groupChatMessage?group_id=${data.id}`, {
+        headers: { Authorization: token },
+      })
+      .then((resu) => {
+        admin = resu.data.admin.admin;
+        const div = document.getElementById("userMessages");
+        div.innerHTML = ""; // Clear existing messages
+        // localStorage.setItem("sendUser", result.data.sendUser);
 
-          resu.data.result.forEach((e) => {
-            // console.log(e);
-            showMessagesForGrpChat(e, resu.data.sendUser);
-            // console.log(e)
-          });
+        resu.data.result.forEach((e) => {
+          showMessagesForGrpChat(e, resu.data.sendUser);
         });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  setTimeout(async () => {
-    await msg();
-  }, 0);
-
-  socket.on("aaaaaa", async (data) => {
-    await msg();
-  });
+      });
+  } catch (error) {
+    console.error(error);
+  }
 
   function showMessagesForGrpChat(data, user) {
     // console.log("data is", data.user.id, data.message, "and user is ", user);
@@ -216,14 +207,12 @@ function groupChatInterface(target) {
       }
     );
 
-    console.log(result.data.sendUser, "asdadsasdasdasd");
     result.data.users.forEach((data) => {
       showMemebersInOptions(data, result.data.sendUser);
     });
   }
 
   function showMemebersInOptions(data, user) {
-    console.log(data);
     var mainPPPP = document.getElementById("membersInGrpList");
     const membersInGrpListDiv = Object.assign(document.createElement("li"), {
       className: "membersInGrpListDiv",
@@ -358,13 +347,10 @@ function groupChatInterface(target) {
         elementToRemove.remove();
       }
       // TODO: Perform search using searchBy and inputValue
-      console.log(`Searching by ${searchBy}: ${inputValue}`);
-
       const result = await axios.get(
         `http://localhost:4001/user/searching?searchType=${searchBy}&value=${inputValue}`
       );
 
-      console.log(result);
       if (result.data.user.length != 0) {
         // // Remove existing searchedUser div if it exists
         // var existingSearchedUser = document.getElementById("searchedUser");
@@ -401,7 +387,6 @@ function groupChatInterface(target) {
             // document.getElementById(`searchedUser${user.id}`).textContent =
             //   "hello";
             document.getElementById(`searchedUser${user.id}`).remove();
-            console.log(user.id, token2);
             await axios.put(
               `http://localhost:4001/user/addMemberForGrp?userId=${user.id}&groupId=${token2}`
             );
@@ -439,8 +424,9 @@ function groupChatInterface(target) {
   document
     .getElementById("navBar")
     .addEventListener("click", handleElementClick);
-}
+};
 
+let currentDivPers = null;
 //showing users in the Main Div when making relations
 function showPersonalChatUsersOnScreenMain(e) {
   var navBar = document.getElementById("navBar");
@@ -449,13 +435,25 @@ function showPersonalChatUsersOnScreenMain(e) {
   newwDiv.style.color = "white";
   newwDiv.className = "userNameDivMain";
   newwDiv.textContent = e.username;
+  newwDiv.onclick = (event) => {
+    personalChatInterface(event.target);
+  };
 
   navBar.appendChild(newwDiv);
 
-  newwDiv.addEventListener("click", async () => {
-    console.log("clicked in personal");
+  socket.on("aaaaaa", function (forchat) {
+    if (forchat == "personal") {
+      setTimeout(() => {
+        // personalChatInterface(currentDivPers);
+        personalMsg(currentDivPers)
+      }, 1000);
+    }
+  });
+
+  function personalChatInterface(data) {
+    currentDivPers = data;
     forChat = "personal";
-    token2 = e.id;
+    token2 = data.id;
 
     //removing admin option menu in personal chats
     var userNameInInterface = document.getElementById("userName");
@@ -468,9 +466,13 @@ function showPersonalChatUsersOnScreenMain(e) {
     div.innerHTML = "";
     document.getElementById("userNameToChat").textContent = e.username;
 
-    async function msg() {
+    personalMsg(data);
+  }
+
+  const personalMsg = async (data) => {
+    try {
       await axios
-        .get(`http://localhost:4001/messageChat?reciever_id=${e.id}`, {
+        .get(`http://localhost:4001/messageChat?reciever_id=${data.id}`, {
           headers: { Authorization: token },
         })
         .then((result) => {
@@ -480,16 +482,10 @@ function showPersonalChatUsersOnScreenMain(e) {
             showMessages(e, result.data.user);
           });
         });
+    } catch (err) {
+      console.log(err);
     }
-
-    socket.on("aaaaaa", async (data) => {
-      await msg();
-    });
-
-    setTimeout(async () => {
-      await msg();
-    }, 0);
-  });
+  };
 }
 
 function showMessages(data, user) {

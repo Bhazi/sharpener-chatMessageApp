@@ -81,7 +81,6 @@ exports.getUsersForCreateGrp = async (req, res) => {
 exports.getMessageInGrpChat = async (req, res) => {
   console.log(req.user, "this is req.user");
   const attributes = ["message"];
-  const attributesInUser = ["username"];
   const result = await groupMessage.findAll({
     where: { GroupNameId: req.query.group_id },
     attributes: attributes,
@@ -99,6 +98,6 @@ exports.getMessageInGrpChat = async (req, res) => {
   res.status(200).json({
     result,
     sendUser: req.user,
-    admin: admin.admin,
+    admin: admin,
   });
 };
