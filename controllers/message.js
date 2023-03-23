@@ -4,6 +4,8 @@ const groupMembers = require("../models/groupMembers");
 const User = require("../models/user");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
+const Images = require("../models/images");
+const Documents = require("../models/documents");
 
 exports.postChats = async (req, res) => {
   try {
@@ -60,8 +62,96 @@ exports.getMessageBwUsers = async (req, res) => {
       ],
       order: [["createdAt", "ASC"]],
     });
+
+    const imageResult = await Images.findAll({
+      where: {
+        [Op.or]: [
+          {
+            sender_id: req.user,
+            reciever_id: req.query.reciever_id,
+          },
+          {
+            sender_id: req.query.reciever_id,
+            reciever_id: req.user,
+          },
+        ],
+      },
+      include: {
+        as: "sender",
+        model: User,
+        attributes: ["username", "id"],
+      },
+    });
+
+    const documentResult = await Documents.findAll({
+      where: {
+        [Op.or]: [
+          {
+            sender_id: req.user,
+            reciever_id: req.query.reciever_id,
+          },
+          {
+            sender_id: req.query.reciever_id,
+            reciever_id: req.user,
+          },
+        ],
+      },
+      include: {
+        as: "sender",
+        model: User,
+        attributes: ["username", "id"],
+      },
+    });
+
+    const data = [
+      ...messages.map((messages) => ({
+        type: "message",
+        message: messages,
+        createdAt: messages.createdAt,
+      })),
+      ...imageResult.map((image) => ({
+        type: "image",
+        data: image,
+        createdAt: image.createdAt,
+      })),
+      ...documentResult.map((document) => ({
+        type: "document",
+        data: document,
+        createdAt: document.createdAt,
+      })),
+    ];
+
+    // Sort the data array by the createdAt timestamp
+    data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    ///////
+    // const data = [
+    //   ...result.map((message) => ({
+    //     type: "message",
+    //     message: message.message,
+    //     createdAt: message.createdAt,
+    //     user: message.user,
+    //   })),
+    //   ...imageResult.map((image) => ({
+    //     type: "image",
+    //     data: image,
+    //     createdAt: image.createdAt,
+    //   })),
+    //   ...documentResult.map((document) => ({
+    //     type: "document",
+    //     data: document,
+    //     createdAt: document.createdAt,
+    //   })),
+    // ];
+    /////
+    // res.status(200).json({
+    //   imageResult,
+    //   messages,
+    //   user: req.user,
+    //   name: req.names,
+    //   sendUser: tokenising(req.query.reciever_id),
+    // });
     res.status(200).json({
-      messages,
+      data,
       user: req.user,
       name: req.names,
       sendUser: tokenising(req.query.reciever_id),
@@ -78,17 +168,95 @@ exports.getUsersForCreateGrp = async (req, res) => {
   });
 };
 
+// exports.getMessageInGrpChat = async (req, res) => {
+//   console.log(req.user, "this is req.user");
+//   const attributes = ["message","createdAt"];
+//   const result = await groupMessage.findAll({
+//     where: { GroupNameId: req.query.group_id },
+//     attributes: attributes,
+//     include: {
+//       model: User,
+//       attributes: ["username", "id"],
+//     },
+//   });
+
+//   const data = [];
+//   // result.forEach(())
+
+//   const imageResult = await Images.findAll({
+//     where: { group_id: req.query.group_id },
+//   });
+
+//   const admin = await groupMembers.findOne({
+//     where: { user_id: req.user, group_id: req.query.group_id },
+//     attributes: ["admin"],
+//   });
+
+//   res.status(200).json({
+//     result,
+//     sendUser: req.user,
+//     admin: admin,
+//     imageResult: imageResult,
+//   });
+// };
+
+//////////////////////////
 exports.getMessageInGrpChat = async (req, res) => {
   console.log(req.user, "this is req.user");
-  const attributes = ["message"];
+  const messageAttributes = ["message", "createdAt"];
   const result = await groupMessage.findAll({
     where: { GroupNameId: req.query.group_id },
-    attributes: attributes,
+    attributes: messageAttributes,
     include: {
       model: User,
       attributes: ["username", "id"],
     },
   });
+
+  const imageResult = await Images.findAll({
+    where: { group_id: req.query.group_id },
+    include: {
+      as: "sender",
+      model: User,
+      attributes: ["username", "id"],
+    },
+  });
+
+  const documentResult = await Documents.findAll({
+    where: { group_id: req.query.group_id },
+    include: {
+      as: "sender",
+      model: User,
+      attributes: ["username", "id"],
+    },
+  });
+
+  // Merge the messages and images into a single array
+  // const data = [...result, ...imageResult, ...documentResult];
+
+  ///////////////////
+
+  const data = [
+    ...result.map((message) => ({
+      type: "message",
+      message: message.message,
+      createdAt: message.createdAt,
+      user: message.user,
+    })),
+    ...imageResult.map((image) => ({
+      type: "image",
+      data: image,
+      createdAt: image.createdAt,
+    })),
+    ...documentResult.map((document) => ({
+      type: "document",
+      data: document,
+      createdAt: document.createdAt,
+    })),
+  ];
+  /////////
+  // Sort the data array by the createdAt timestamp
+  data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
   const admin = await groupMembers.findOne({
     where: { user_id: req.user, group_id: req.query.group_id },
@@ -96,7 +264,7 @@ exports.getMessageInGrpChat = async (req, res) => {
   });
 
   res.status(200).json({
-    result,
+    data,
     sendUser: req.user,
     admin: admin,
   });

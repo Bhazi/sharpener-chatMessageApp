@@ -67,12 +67,16 @@ socket.on("aaaaaa", function (forchat) {
   if (forchat == "group") {
     setTimeout(() => {
       // groupChatInterface(currentNewwDiv);
-      msg(currentNewwDiv)
-    }, 1000);
+      msg(currentNewwDiv);
+    }, 530);
   }
 });
 
 function groupChatInterface(data) {
+  //input text area and user message height setting
+  document.querySelector(".inputAndSubmit").style.display = "block";
+  document.querySelector(".userMessages").style.height = "523px";
+
   currentNewwDiv = data;
   forChat = "group";
   token2 = data.id;
@@ -90,12 +94,15 @@ const msg = async (data) => {
         headers: { Authorization: token },
       })
       .then((resu) => {
+        console.log(resu);
         admin = resu.data.admin.admin;
         const div = document.getElementById("userMessages");
         div.innerHTML = ""; // Clear existing messages
         // localStorage.setItem("sendUser", result.data.sendUser);
-
-        resu.data.result.forEach((e) => {
+        // resu.data.data.forEach((e) => {
+        //   console.log(e);
+        // });
+        resu.data.data.forEach((e) => {
           showMessagesForGrpChat(e, resu.data.sendUser);
         });
       });
@@ -104,42 +111,181 @@ const msg = async (data) => {
   }
 
   function showMessagesForGrpChat(data, user) {
-    // console.log("data is", data.user.id, data.message, "and user is ", user);
-    if (data.user.id == user) {
-      var div = document.getElementById("userMessages");
-      var divvs = document.createElement("div");
-      divvs.className = "endFlex";
-      var userName = document.createElement("p");
-      userName.className = "nameOfUsersInGrpEnnd";
-      // userName.textContent = data.user.username;
-      var usertext = document.createElement("p");
-      usertext.id = "spanMessageEndFlex";
-      usertext.textContent = data.message;
-      userName.appendChild(usertext);
-      divvs.appendChild(userName);
-      div.appendChild(divvs);
-      usssse = null;
-    } else {
-      var div = document.getElementById("userMessages");
-      var divvs = document.createElement("div");
-      divvs.className = "startFlex";
-      var userName = document.createElement("p");
-      userName.className = "nameOfUsersInGrpStarrt";
-      if (usssse == null) {
+    if (data.type == "message") {
+      // console.log("data is", data.user.id, data.message, "and user is ", user);
+      if (data.user.id == user) {
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        divvs.className = "endFlex";
+        var userName = document.createElement("p");
+        userName.className = "nameOfUsersInGrpEnnd";
+        // userName.textContent = data.user.username;
+        var usertext = document.createElement("p");
+        usertext.id = "spanMessageEndFlex";
+        usertext.textContent = data.message;
+        userName.appendChild(usertext);
+        divvs.appendChild(userName);
+        div.appendChild(divvs);
         usssse = data.user.username;
-        userName.textContent = data.user.username;
-      } else if (usssse == data.user.username) {
       } else {
-        usssse = data.user.username;
-        userName.textContent = data.user.username;
-      }
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        divvs.className = "startFlex";
+        var userName = document.createElement("p");
+        userName.className = "nameOfUsersInGrpStarrt";
+        if (data.user.username == usssse) {
+          usssse = data.user.username;
+        } else if (usssse != data.user.username || usssse == null) {
+          usssse = data.user.username;
+          usssse = data.user.username;
+          userName.textContent = data.user.username;
+        }
 
-      var usertext = document.createElement("p");
-      usertext.id = "spanMessageStartFlex";
-      usertext.textContent = data.message;
-      userName.appendChild(usertext);
-      divvs.appendChild(userName);
-      div.appendChild(divvs);
+        var usertext = document.createElement("p");
+        usertext.id = "spanMessageStartFlex";
+        usertext.textContent = data.message;
+        userName.appendChild(usertext);
+        divvs.appendChild(userName);
+        div.appendChild(divvs);
+      }
+    } else if (data.type == "image") {
+      if (data.data.sender_id == user) {
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        divvs.className = "endFlexImage";
+        let buffer = data.data.data.data;
+        let binary = "";
+        let bytes = new Uint8Array(buffer);
+
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+
+        let base64 = window.btoa(binary);
+        // console.log(base64);
+
+        let img = document.createElement("img");
+        img.src = "data:image/jpeg;base64," + base64;
+        img.id = "imagesInGrp";
+        img.className = "imagesInGrp";
+        divvs.appendChild(img);
+        div.appendChild(divvs);
+        usssse = data.data.sender.username;
+      } else {
+        // console.log(data.data.sender.username);
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        if (data.data.sender.username != usssse || usssse == null) {
+          usssse = data.data.sender.username;
+          divvs.textContent = `${data.data.sender.username}`;
+        }
+        // divvs.className = "startFlexImage";
+        divvs.className = "startFlexImage";
+        divvs.id = `${data.data.sender.username}`;
+        let buffer = data.data.data.data;
+        let binary = "";
+        let bytes = new Uint8Array(buffer);
+
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+
+        let base64 = window.btoa(binary);
+        // console.log(base64);
+
+        let img = document.createElement("img");
+        img.src = "data:image/jpeg;base64," + base64;
+        img.id = "imagesInGrpStart";
+        img.className = "imagesInGrpStart";
+        divvs.appendChild(img);
+        div.appendChild(divvs);
+      }
+    } else {
+      if (data.data.sender_id == user) {
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        divvs.className = "endFlexDocument";
+        let buffer = data.data.data.data;
+        let binary = "";
+        let bytes = new Uint8Array(buffer);
+
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+
+        let base64 = window.btoa(binary);
+        const filename = data.data.filename;
+        const icon = getIconForFile(filename);
+        const fileLink = document.createElement("a");
+        fileLink.className = "documentsInGrp";
+        fileLink.onclick = basimsw;
+        fileLink.innerHTML = `<i class="${icon}"></i> ${filename}`;
+        divvs.appendChild(fileLink);
+        div.appendChild(divvs);
+
+        function basimsw() {
+          // create anchor element and click it programmatically
+          // const link = document.createElement("a");
+          fileLink.setAttribute(
+            "href",
+            `data:${data.data.filetype};base64,` + base64
+            //   `data:application/octet-stream;base64,` + base64
+          );
+          fileLink.setAttribute(
+            "href",
+            "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," +
+              base64
+          );
+
+          fileLink.setAttribute("download", `${filename}`);
+          // link.setAttribute("download", "file.pdf");
+        }
+        usssse = data.data.sender.username;
+      } else {
+        var div = document.getElementById("userMessages");
+        var divvs = document.createElement("div");
+        if (data.data.sender.username != usssse || usssse == null) {
+          usssse = data.data.sender.username;
+          divvs.textContent = `${data.data.sender.username}`;
+        }
+        divvs.className = "startFlexDocument";
+        let buffer = data.data.data.data;
+        let binary = "";
+        let bytes = new Uint8Array(buffer);
+
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        //
+        let base64 = window.btoa(binary);
+
+        const filename = data.data.filename;
+        const icon = getIconForFile(filename);
+        const fileLink = document.createElement("a");
+        fileLink.className = "documentsInGrpStart";
+        fileLink.onclick = basimsw;
+        fileLink.innerHTML = `<i class="${icon}"></i> ${filename}`;
+        divvs.appendChild(fileLink);
+        div.appendChild(divvs);
+
+        function basimsw() {
+          // create anchor element and click it programmatically
+          // const link = document.createElement("a");
+          fileLink.setAttribute(
+            "href",
+            `data:${data.data.filetype};base64,` + base64
+            //   `data:application/octet-stream;base64,` + base64
+          );
+          fileLink.setAttribute(
+            "href",
+            "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," +
+              base64
+          );
+
+          fileLink.setAttribute("download", `${filename}`);
+          // link.setAttribute("download", "file.pdf");
+        }
+      }
     }
   }
   //Menu options for only group chat
@@ -445,12 +591,16 @@ function showPersonalChatUsersOnScreenMain(e) {
     if (forchat == "personal") {
       setTimeout(() => {
         // personalChatInterface(currentDivPers);
-        personalMsg(currentDivPers)
-      }, 1000);
+        personalMsg(currentDivPers);
+      }, 530);
     }
   });
 
   function personalChatInterface(data) {
+    //input text area and user message height setting
+    document.querySelector(".inputAndSubmit").style.display = "block";
+    document.querySelector(".userMessages").style.height = "523px";
+
     currentDivPers = data;
     forChat = "personal";
     token2 = data.id;
@@ -476,9 +626,10 @@ function showPersonalChatUsersOnScreenMain(e) {
           headers: { Authorization: token },
         })
         .then((result) => {
+          console.log(result);
           const div = document.getElementById("userMessages");
           div.innerHTML = ""; // Clear existing messages
-          result.data.messages.forEach((e) => {
+          result.data.data.forEach((e) => {
             showMessages(e, result.data.user);
           });
         });
@@ -489,24 +640,140 @@ function showPersonalChatUsersOnScreenMain(e) {
 }
 
 function showMessages(data, user) {
-  if (data.sender_id == user) {
-    var div = document.getElementById("userMessages");
-    var divvs = document.createElement("div");
-    divvs.className = "ennd";
-    var user = document.createElement("p");
-    user.id = "spanMessageEnd";
-    user.textContent = data.message;
-    divvs.appendChild(user);
-    div.appendChild(divvs);
+  if (data.type == "message") {
+    if (data.message.sender_id == user) {
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      divvs.className = "ennd";
+      var user = document.createElement("p");
+      user.id = "spanMessageEnd";
+      user.textContent = data.message.message;
+      divvs.appendChild(user);
+      div.appendChild(divvs);
+    } else {
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      divvs.className = "starrt";
+      var user = document.createElement("p");
+      user.id = "spanMessageStart";
+      user.textContent = data.message.message;
+      divvs.appendChild(user);
+      div.appendChild(divvs);
+    }
+  } else if (data.type == "image") {
+    if (data.data.sender_id == user) {
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      divvs.className = "endFlexImagePersonal";
+      let buffer = data.data.data.data;
+      let binary = "";
+      let bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      let base64 = window.btoa(binary);
+      // console.log(base64);
+      let img = document.createElement("img");
+      img.src = "data:image/jpeg;base64," + base64;
+      img.id = "imagesInGrp";
+      img.className = "imagesInGrp";
+      divvs.appendChild(img);
+      div.appendChild(divvs);
+    } else {
+      // console.log(data.data.sender.username);
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      // divvs.className = "startFlexImage";
+      divvs.className = "startFlexImagePersonal";
+      divvs.id = `${data.data.sender.username}`;
+      let buffer = data.data.data.data;
+      let binary = "";
+      let bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      let base64 = window.btoa(binary);
+      // console.log(base64);
+      let img = document.createElement("img");
+      img.src = "data:image/jpeg;base64," + base64;
+      img.id = "imagesInGrpStart";
+      img.className = "imagesInGrpStart";
+      divvs.appendChild(img);
+      div.appendChild(divvs);
+    }
   } else {
-    var div = document.getElementById("userMessages");
-    var divvs = document.createElement("div");
-    divvs.className = "starrt";
-    var user = document.createElement("p");
-    user.id = "spanMessageStart";
-    user.textContent = data.message;
-    divvs.appendChild(user);
-    div.appendChild(divvs);
+    if (data.data.sender_id == user) {
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      divvs.className = "endFlexDocumentPersonal";
+      let buffer = data.data.data.data;
+      let binary = "";
+      let bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      let base64 = window.btoa(binary);
+      const filename = data.data.filename;
+      const icon = getIconForFile(filename);
+      const fileLink = document.createElement("a");
+      fileLink.className = "documentsInGrp";
+      fileLink.onclick = basimsw;
+      fileLink.innerHTML = `<i class="${icon}"></i> ${filename}`;
+      divvs.appendChild(fileLink);
+      div.appendChild(divvs);
+      function basimsw() {
+        // create anchor element and click it programmatically
+        // const link = document.createElement("a");
+        fileLink.setAttribute(
+          "href",
+          `data:${data.data.filetype};base64,` + base64
+          //   `data:application/octet-stream;base64,` + base64
+        );
+        fileLink.setAttribute(
+          "href",
+          "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," +
+            base64
+        );
+        fileLink.setAttribute("download", `${filename}`);
+        // link.setAttribute("download", "file.pdf");
+      }
+    } else {
+      var div = document.getElementById("userMessages");
+      var divvs = document.createElement("div");
+      divvs.className = "startFlexDocumentPersonal";
+      let buffer = data.data.data.data;
+      let binary = "";
+      let bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      //
+      let base64 = window.btoa(binary);
+      const filename = data.data.filename;
+      const icon = getIconForFile(filename);
+      const fileLink = document.createElement("a");
+      fileLink.className = "documentsInGrpStart";
+      fileLink.onclick = basimsw;
+      fileLink.innerHTML = `<i class="${icon}"></i> ${filename}`;
+      divvs.appendChild(fileLink);
+      div.appendChild(divvs);
+      function basimsw() {
+        // create anchor element and click it programmatically
+        // const link = document.createElement("a");
+        fileLink.setAttribute(
+          "href",
+          `data:${data.data.filetype};base64,` + base64
+          //   `data:application/octet-stream;base64,` + base64
+        );
+        fileLink.setAttribute(
+          "href",
+          "data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64," +
+            base64
+        );
+        fileLink.setAttribute("download", `${filename}`);
+        // link.setAttribute("download", "file.pdf");
+      }
+    }
   }
 }
 
@@ -698,3 +965,200 @@ document.getElementById("nav").addEventListener("click", async () => {
     setTimeout(() => navDiv.remove(), 500);
   });
 });
+
+//add document interface
+const addDocument = document.getElementById("add-document");
+const userChats = document.getElementById("userChats");
+const addDocuments = document.getElementById("add-documents");
+
+addDocument.addEventListener("mouseover", () => {
+  addDocument.classList.add("hovered");
+  userChats.style.cssText = "left: 255px; width: 522px;";
+  addDocuments.style.display = "block";
+});
+
+addDocuments.addEventListener("mouseleave", () => {
+  addDocument.classList.remove("hovered");
+  userChats.style.cssText = "left: 63px; width: 714px;";
+  addDocuments.style.display = "none";
+});
+
+//adding event for Documents
+// document
+//   .getElementById("documents_Button")
+//   .addEventListener("click", function () {
+//     var document_option = document.getElementById("document_option");
+//     document_option.style.display = "block";
+
+//     document
+//       .getElementById("document_button_submit")
+//       .addEventListener("click", async function () {
+//         const fileInput = document.getElementById("document_file");
+//         const file = fileInput.files[0];
+
+//         if (!file) {
+//           throw new Error("File is empty please upload the file");
+//         }
+
+//         const formData = new FormData();
+//         formData.append("file", file);
+//         formData.append("forChat", forChat);
+//         formData.append("token2", token2);
+
+//         const response = await axios.post(
+//           "http://localhost:4001/user/addDocuments",
+//           formData,
+//           { headers: { Authorization: token } }
+//         );
+
+//         console.log(response);
+//         //removing the document option div
+//         document.getElementById("document_option").style.display = "none";
+//       });
+//   });
+/////////////////////////
+
+//adding event for Images
+document
+  .getElementById("documents_Button")
+  .addEventListener("click", function () {
+    var document_option = document.getElementById("document_option");
+    document_option.style.display = "block";
+
+    var submitBtn = document.getElementById("document_button_submit");
+
+    // Remove previous event listener
+    submitBtn.removeEventListener("click", onSubmitDocument);
+
+    // Add new event listener
+    submitBtn.addEventListener("click", onSubmitDocument);
+  });
+
+async function onSubmitDocument() {
+  const fileInput = document.getElementById("document_file");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    document_option.style.display = "none";
+    throw new Error("No Document was uploaded or the document is empty ");
+  }
+
+  const data = {
+    forChat: forChat,
+    token2: token2,
+  };
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await axios.post(
+    "http://localhost:4001/user/addDocuments",
+    formData,
+    {
+      headers: {
+        Authorization: token,
+        "Content-Type": "multipart/form-data",
+      },
+      params: data,
+    }
+  );
+
+  // Clear the file input
+  fileInput.value = "";
+
+  // Hide the document option
+  document_option.style.display = "none";
+  socket.emit("new-data", forChat);
+}
+
+//adding event for Images
+document.getElementById("images_Button").addEventListener("click", function () {
+  var document_option = document.getElementById("document_option");
+  document_option.style.display = "block";
+
+  var submitBtn = document.getElementById("document_button_submit");
+
+  // Remove previous event listener
+  submitBtn.removeEventListener("click", onSubmitImage);
+
+  // Add new event listener
+  submitBtn.addEventListener("click", onSubmitImage);
+});
+
+async function onSubmitImage() {
+  const fileInput = document.getElementById("document_file");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    document_option.style.display = "none";
+    throw new Error("No images was uploaded or the images is empty ");
+  }
+
+  const data = {
+    forChat: forChat,
+    token2: token2,
+  };
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await axios.post(
+    "http://localhost:4001/user/addImages",
+    formData,
+    {
+      headers: {
+        Authorization: token,
+        "Content-Type": "multipart/form-data",
+      },
+      params: data,
+    }
+  );
+
+  // Clear the file input
+  fileInput.value = "";
+
+  // Hide the document option
+  document_option.style.display = "none";
+  socket.emit("new-data", forChat);
+}
+
+////////////for buffer////////////
+if (!window.btoa) {
+  window.btoa = function (string) {
+    let buffer = new Uint8Array(string.length);
+
+    for (let i = 0; i < string.length; i++) {
+      buffer[i] = string.charCodeAt(i);
+    }
+
+    let binary = "";
+    let bytes = new Uint8Array(buffer.buffer);
+
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return window.btoa(binary);
+  };
+}
+
+//for file icons
+
+function getIconForFile(filename) {
+  const ext = filename.split(".").pop().toLowerCase();
+  switch (ext) {
+    case "pdf":
+      return "fa fa-file-pdf-o";
+    case "doc":
+    case "docx":
+      return "fa fa-file-word-o";
+    case "xls":
+    case "xlsx":
+      return "fa fa-file-excel-o";
+    case "ppt":
+    case "pptx":
+      return "fa fa-file-powerpoint-o";
+    default:
+      return "fa fa-file";
+  }
+}

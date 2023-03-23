@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 const GroupName = require("../models/groupName");
 const { where } = require("sequelize");
 const Sample = require("../models/sample");
+const Documents = require("../models/documents");
+const Images = require("../models/images");
 
 exports.postSignUp = (req, res, next) => {
   var { name, email, phone, password } = req.body;
@@ -252,4 +254,82 @@ exports.getSamples = async (req, res) => {
   await Sample.findAll().then((result) => {
     res.send(result);
   });
+};
+
+exports.poioiPost = async (req, res) => {
+  // console.log(req.files);
+  console.log(req.files[0].buffer);
+  // const { originalname, mimetype } = req.files;
+  // const originalname = req.file.originalname;
+  // console.log(originalname, mimetype);
+
+  // const image = {
+  //   filename: originalname,
+  //   filetype: mimetype,
+  //   data: buffer,
+  // };
+  // Image.create(image)
+  //   .then(() => {
+  //     res.send("Image uploaded successfully");
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //     res.send("Error uploading image");
+  //   });
+  // res.send("file uploaded successfully");
+};
+
+exports.postDocuments = async (req, res) => {
+  const { originalname, mimetype, buffer } = req.file;
+
+  try {
+    if (req.query.forChat == "personal") {
+      await Documents.create({
+        filename: originalname,
+        filetype: mimetype,
+        data: buffer,
+        sender_id: req.user,
+        reciever_id: req.query.token2,
+      });
+    } else {
+      await Documents.create({
+        filename: originalname,
+        filetype: mimetype,
+        data: buffer,
+        sender_id: req.user,
+        group_id: req.query.token2,
+      });
+    }
+
+    res.status(201).json({ message: "Document uploaded successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.postImages = async (req, res) => {
+  const { originalname, mimetype, buffer } = req.file;
+
+  try {
+    if (req.query.forChat == "personal") {
+      await Images.create({
+        filename: originalname,
+        filetype: mimetype,
+        data: buffer,
+        sender_id: req.user,
+        reciever_id: req.query.token2,
+      });
+    } else {
+      await Images.create({
+        filename: originalname,
+        filetype: mimetype,
+        data: buffer,
+        sender_id: req.user,
+        group_id: req.query.token2,
+      });
+    }
+    res.status(201).json({ message: "Image uploaded successfully" });
+  } catch (error) {
+    console.log(error);
+  }
 };

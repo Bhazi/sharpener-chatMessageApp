@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Golos+Text&family=Libre+Franklin:wght@300&family=Mynerve&family=Nunito:wght@500&family=Open+Sans:wght@300&family=Overpass:wght@300&display=swap"
       rel="stylesheet"
     />
+    <script src="https://use.fontawesome.com/29f6cacf74.js"></script>
     <title>Message</title>
   </head>
   <body>
@@ -28,7 +29,16 @@
         <p id="userNameToChat" class="userNameToChat"></p>
       </div>
       <div id="userMessages" class="userMessages"></div>
-      <div class="inputAndSubmit">
+
+      <div class="inputAndSubmit" style="display: none">
+        <div>
+          <button id="add-document" class="add-document_div">
+            <img
+              class="innerImg-add_documents"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADhUlEQVR4nO1bO2sUURS+KvgqRLQTFEUUH42mUNTCH6Ci4KOyEB9BiDPfN2OhiLLBQtTCSkEQbcRXBBVNzhlNEWwELa0sfBBQGzURA75RuTFZb5Y1rslMdjK5HxyGvffszjnfPY/Zu3eNSRkSBPMV2CHAgTZgjwTBEjMWcHffvnkCtAr5Q8mfrgjZ0QosNkVFK7BMgTeVjg8Q4EMSBKtN0XC7sXGqkk/Lqw18U+C2kseVFCU/O3OvkyiaYYoEJfc6of5W4ni5O29fW8cdEo6aIkGBG06o766mI2G43dG5b4oEJTfa/BdAJQgmVdMplUrjlWyxEaLkNjOaIUEwTclDvQ6TGwbMkSeF/FrRAb4KcOJfejVKt5BPBLgmYbirvalp5og63wqsFPKVk8/v3HkFvvylA3ypSe8/RcgeS+5NYHrmzidxvEiA95VGDHBsEGNr1RuSAM+UbMiUACE7huNYWxwv7NNZOqxVB87ZziPAwwoSPraRazJxXgcxulYCelcJOCXki2GudrOzKFv6Cmv/3Jt7Ybgg016vIxna/yDAwjqswEunLnRkQcCRvBAg5LEq9jW4hbUN2JQuAUDzEAn4btuWvaZIwJ1qNtpuUNYB2nNBQBKGm+24XZHUCAC+JVG0otLGe01Ns3q/h/zRmVF3Alq2bp1gx+015VToso/d1mn3/kI+cHTW1Z0AM8hc1iJk45gmQIHDY52AZk9AWlAfAfApoL4G0BdBrUJC/8OOhQCfnLnP/eMtpdLEwnYBBeaWCSAvO+PXy+NBsKSwBCRRtN9xdJJ9RBVgZ0epNLk8DhwtLAFiNyScKKi6lUb2FJYA/U3CcwVWVb5Pomitu4laWAL0DxEPFDgjwGklH9XF8XoSoHkSTwB8BBifAilBfQ2AL4Ja76ruuwDz3wbl9778+b7zQekLcKXaKbQ8EXA6tZv+zRbyZm4JUOCMyRgC3Mp1CghwwZ4STV3Ig0pezXUKaJ7EEwAfAcanwMhviHT2H4bKAkkcz1bgcW5rgJBnTcYQspRnAjrtJqjJCO1hOCfXEaB5Ek8AfAQYnwIpQX0NgC+COpa7QBJF++vu0H+KkFFqBAi5od4ODUHWpf3fwO4cOFWrdLVE0RSTJpJRlAYC0KSNn8aME+BSvZ2rQS5aW1MnwMJ+sAJxTtOhy658Zs4bB7Ym2MJoK21mvwHUKNaGJAzXDzXnfwEWw3a+idj1QQAAAABJRU5ErkJggg=="
+            />
+          </button>
+        </div>
         <input
           class="messagingBox"
           id="userChats"
@@ -36,6 +46,23 @@
           type="text"
         />
         <button id="submitChats" class="sendMessage" type="submit">send</button>
+      </div>
+      <div id="document_option" class="document_option" style="display: none">
+        <input type="file" name="" id="document_file" />
+        <button type="submit" id="document_button_submit">Submit</button>
+      </div>
+      <div id="add-documents" class="add-documents" style="display: none">
+        <button
+          id="documents_Button"
+          class="Documents_Docx add-document_button"
+        >
+          Documents</button
+        ><button
+          id="images_Button"
+          class="Documents_Images add-document_button"
+        >
+          Images
+        </button>
       </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
